@@ -1837,7 +1837,7 @@ public function saveCommentReply(Request $request, $commentId)
         $request->validate([
             'type' => 'required|in:up,down',
         ]);
-
+        // dump($request, $id);
         $feedback = Feedback::findOrFail($id);
         if (!$feedback) {
             return response()->json(['message' => 'Feedback not found'], 404);

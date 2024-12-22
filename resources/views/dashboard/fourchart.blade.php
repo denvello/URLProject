@@ -70,8 +70,16 @@
                 borderWidth: 2,
                 tension: 0.3
             }]
+        },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true // Sumbu Y mulai dari 0
+            }
         }
-    });
+    }
+});
 
     // Chart 2: Jumlah Komentar
     const commentsCtx = document.getElementById('commentsChart').getContext('2d');
@@ -103,8 +111,16 @@
                 borderWidth: 2,
                 tension: 0.3
             }]
+        },
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true // Sumbu Y mulai dari 0
+            }
         }
-    });
+    }
+});
 
     //Chart 4: Jumlah Input Search
     const likesCtx = document.getElementById('searchChart').getContext('2d');

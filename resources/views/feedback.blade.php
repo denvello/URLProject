@@ -303,7 +303,7 @@
                         <span>
                             {{ $feedback->user->name ?? 'Anonymous' }} • {{ $feedback->created_at->diffForHumans() }}
                         </span>
-                        <div class="vote-buttons">
+                        <!-- <div class="vote-buttons">
                             <button class="upvote" 
                                 onclick="{{ Auth::check() ? 'voteFeedback(' . $feedback->id . ', \'up\')' : 'redirectToLogin()' }}">
                                 <i class="fas fa-thumbs-up"></i> {{ $feedback->upvotes }}
@@ -312,6 +312,9 @@
                                 onclick="{{ Auth::check() ? 'voteFeedback(' . $feedback->id . ', \'down\')' : 'redirectToLogin()' }}">
                                 <i class="fas fa-thumbs-down"></i> {{ $feedback->downvotes }}
                             </button>
+                        </div> -->
+                        <div>
+                            👍 {{ $feedback->upvotes }} | 👎 {{ $feedback->downvotes }}
                         </div>
                     </div>
                 </div>
@@ -324,7 +327,25 @@
                         <p class="full-description">
                             {{ $feedback->description }}
                         </p>
-                    </div>    
+                    </div> 
+                    <!-- <div style="margin-top: 20px; text-align: center;">
+                        <button class="upvote" onclick="{{ Auth::check() ? 'voteFeedback(' . $feedback->id . ', \'up\')' : 'redirectToLogin()' }}">
+                            <i class="fas fa-thumbs-up"></i> Upvote
+                        </button>
+                        <button class="downvote" onclick="{{ Auth::check() ? 'voteFeedback(' . $feedback->id . ', \'down\')' : 'redirectToLogin()' }}">
+                            <i class="fas fa-thumbs-down"></i> Downvote
+                        </button>
+                    </div>    -->
+                    <div class="vote-buttons">
+                            <button class="upvote" 
+                                onclick="{{ Auth::check() ? 'voteFeedback(' . $feedback->id . ', \'up\')' : 'redirectToLogin()' }}">
+                                <i class="fas fa-thumbs-up"></i> {{ $feedback->upvotes }}
+                            </button>
+                            <button class="downvote" 
+                                onclick="{{ Auth::check() ? 'voteFeedback(' . $feedback->id . ', \'down\')' : 'redirectToLogin()' }}">
+                                <i class="fas fa-thumbs-down"></i> {{ $feedback->downvotes }}
+                            </button>
+                        </div>
                 </div>
             </div>
   
@@ -347,12 +368,15 @@
 
         async function voteFeedback(feedbackId, type) {
             console.log(`Voting for feedback ID: ${feedbackId}, Type: ${type}`);
+            // const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
             try {
                  const response = await fetch(`/feedback/${feedbackId}/vote`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        // 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        // 'X-CSRF-TOKEN': csrfToken,
                     },
                     body: JSON.stringify({ type }),
                 });
@@ -363,6 +387,7 @@
                 }
 
                 const result = await response.json();
+                console.log('Vote success:', result); 
                 alert(result.message);
                 location.reload(); // Refresh page to update vote counts
             } catch (error) {
