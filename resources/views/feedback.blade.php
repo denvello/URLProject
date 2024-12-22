@@ -367,16 +367,13 @@
         }
 
         async function voteFeedback(feedbackId, type) {
-            console.log(`Voting for feedback ID: ${feedbackId}, Type: ${type}`);
-            // const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            // console.log(`Voting for feedback ID: ${feedbackId}, Type: ${type}`);
             try {
                  const response = await fetch(`/feedback/${feedbackId}/vote`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        // 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
-                        // 'X-CSRF-TOKEN': csrfToken,
                     },
                     body: JSON.stringify({ type }),
                 });
@@ -385,13 +382,29 @@
                     redirectToLogin();
                     return;
                 }
+                if (response.status === 422) {
+                    alert("Input tidak valid. Coba lagi dengan pilihan yang benar.");
+                    return;
+                }
 
+                if (response.status === 404) {
+                    alert("Feedback tidak ditemukan.");
+                    return;
+                }
+
+                if (!response.ok) {
+                    alert("Terjadi kesalahan. Coba lagi nanti.");
+                    return;
+                }
+
+                // console.log(response.status)
                 const result = await response.json();
-                console.log('Vote success:', result); 
+                // console.log('Vote success:', result); 
                 alert(result.message);
                 location.reload(); // Refresh page to update vote counts
             } catch (error) {
                 console.error('Error voting:', error);
+                alert('Terjadi kesalahan pada server. Coba lagi nanti.');
             }
         }
     </script>

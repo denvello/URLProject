@@ -1839,9 +1839,9 @@ public function saveCommentReply(Request $request, $commentId)
         ]);
         // dump($request, $id);
         $feedback = Feedback::findOrFail($id);
-        if (!$feedback) {
-            return response()->json(['message' => 'Feedback not found'], 404);
-        }
+        // if (!$feedback) {
+        //     return response()->json(['message' => 'Feedback not found'], 404);
+        // }
 
         // Prevent duplicate votes
         $existingVote = Vote::where('feedback_id', $id)
