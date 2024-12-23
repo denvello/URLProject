@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('/img/cekduluaja-kotak.png') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
 
     <style>
         /* General Styles */
@@ -155,7 +158,11 @@
             background: rgba(0, 0, 0, 0.7);
             justify-content: center;
             align-items: center;
-            z-index: 1000;
+            z-index: 1000; !important
+        }
+
+        .modal-backdrop {
+            z-index: 1040 !important;
         }
 
         .modal-content {

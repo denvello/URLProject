@@ -345,7 +345,7 @@
                                 onclick="{{ Auth::check() ? 'voteFeedback(' . $feedback->id . ', \'down\')' : 'redirectToLogin()' }}">
                                 <i class="fas fa-thumbs-down"></i> {{ $feedback->downvotes }}
                             </button>
-                        </div>
+                    </div>
                 </div>
             </div>
   
