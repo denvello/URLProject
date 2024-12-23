@@ -2132,6 +2132,34 @@ public function saveCommentReply(Request $request, $commentId)
         return back()->withErrors(['login' => 'Email atau password salah, atau Anda bukan admin.']);
     }
 
+    public function indexFeedback(Request $request)
+    {
+        // Handle sorting
+        $sortBy = $request->get('sort_by', 'id'); // Default sort column
+        $direction = $request->get('direction', 'asc'); // Default direction
+
+        // Fetch feedback with relations and sort
+        // $feedbacks = Feedback::with('user', 'votes')
+        //     ->withCount([
+        //         'votes as upvotes' => function ($query) {
+        //             $query->where('type', 'up');
+        //         },
+        //         'votes as downvotes' => function ($query) {
+        //             $query->where('type', 'down');
+        //         },
+        //     ])
+        //     ->orderBy($sortBy, $direction)
+        //     ->paginate(10);
+        $feedbacks = Feedback::select('feedbacks.*', 'users.name as username')
+        ->leftJoin('users', 'feedbacks.user_id', '=', 'users.id') // Add join for user name
+        ->orderBy(request('sort_by', 'created_at'), request('sort_direction', 'desc')) // Default sorting
+        ->paginate(20);
+    
+
+
+        return view('dashboard.feedback_detail', compact('feedbacks', 'sortBy', 'direction'));
+    }
+    
     
 
    

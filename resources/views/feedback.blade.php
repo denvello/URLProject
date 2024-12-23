@@ -367,12 +367,15 @@
         }
 
         async function voteFeedback(feedbackId, type) {
-            // console.log(`Voting for feedback ID: ${feedbackId}, Type: ${type}`);
+            console.log(`Voting for feedback ID: ${feedbackId}, Type: ${type}`);
+            // const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
             try {
                  const response = await fetch(`/feedback/${feedbackId}/vote`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        // 'X-CSRF-TOKEN': csrfToken,
                         'X-CSRF-TOKEN': '{{ csrf_token() }}',
                     },
                     body: JSON.stringify({ type }),

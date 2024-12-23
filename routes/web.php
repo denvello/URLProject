@@ -98,6 +98,7 @@ Route::get('/dashboard/newscomments', [News_Url_Controller::class, 'showNewsWith
 Route::get('/dashboard/users/profile', [UserController::class, 'userProfile'])->name('dashboard.userprofile');
 Route::get('/dashboard/products', [News_Url_Controller::class, 'indexprod'])->name('dashboard.products');
 Route::get('/dashboard/productscari', [News_Url_Controller::class, 'indexprodcari'])->name('dashboard.productscari');
+Route::get('/dashboard/feedback-detail', [News_Url_Controller::class, 'indexFeedback'])->name('dashboard.feedback-detail');
 
 Route::get('/dashboard/news-chart', [News_Url_Controller::class, 'newsChart'])->name('dashboard.news_chart');
 Route::get('/dashboard/comment-chart', [News_Url_Controller::class, 'commentChart'])->name('dashboard.comment_chart');
