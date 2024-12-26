@@ -564,6 +564,7 @@
                 <a href="/showindexprod" class="btn-link">Daftar Promo</a>
                 
             </div>
+            <h4 style= color:Red>"Cek Dulu Aja, Lebih Tahu - Lebih Baik!" </h4>
         </form>
 
             @if(session('success'))
