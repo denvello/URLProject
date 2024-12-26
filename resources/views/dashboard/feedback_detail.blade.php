@@ -2,53 +2,7 @@
 @push('styles')
 <style>
 /* Modal Content */
-    .modal-content {
-        background-color: #fff;
-        margin: 10% auto;
-        padding: 20px;
-        border-radius: 10px;
-        width: 60%;
-        max-height: 70vh;
-        overflow-y: auto;
-        animation: slideIn 0.3s ease-in-out;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        
-    }
-        .modal-content {
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 10px;
-        width: 50%; /* Width set to 50% */
-        max-width: 600px; /* Optional: Max width for smaller screens */
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        animation: fadeIn 0.3s ease-in-out; /* Smooth fade-in animation */
-    }
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: scale(0.9);
-        }
-        to {
-            opacity: 1;
-            transform: scale(1);
-        }
-    }
-    /* Close Button */
-    .close {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-        cursor: pointer;
-    }
-
-    .close:hover,
-    .close:focus {
-        color: #000;
-        text-decoration: none;
-        cursor: pointer;
-    }
+   
     
 </style>
 @endpush
@@ -69,9 +23,10 @@
         function handleCardClick(feedbackId) {
             const modal = document.getElementById(`modal-${feedbackId}`);
             if (modal) {
-                modal.style.display = 'block';
+                modal.style.display = 'flex';
             }
         }
+
 
         function closeModal(feedbackId) {
             const modal = document.getElementById(`modal-${feedbackId}`);
@@ -158,8 +113,8 @@
             <!-- Modal Template -->
             @foreach ($feedbacks as $feedback)
             <div id="modal-{{ $feedback->id }}" class="modal">
-                <div class="modal-content">
-                    <span class="close" onclick="closeModal({{ $feedback->id }})">&times;</span>
+                <div class="modal-contentF">
+                    <span class="closeF" onclick="closeModal({{ $feedback->id }})">&times;</span>
                     <h2>{{ $feedback->title }}</h2>
                     <div class="full-description">
                         {{ $feedback->description }}

@@ -392,6 +392,79 @@
     #yearlyChartContainer {
         display: none;
     }
+
+    .modal-content {
+        background-color: #fff;
+        margin: 10% auto;
+        padding: 20px;
+        border-radius: 10px;
+        width: 60%;
+        max-height: 70vh;
+        overflow-y: auto;
+        animation: slideIn 0.3s ease-in-out;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        
+    }
+
+    .modalF {
+        display: none;
+        position: fixed;
+        z-index: 1000; !important
+        left: 200;
+        top: 100;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+
+       
+    }
+        .modal-contentF {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        width: 80%; /* Width set to 50% */
+        max-width: 800px; /* Optional: Max width for smaller screens */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 0.3s ease-in-out; /* Smooth fade-in animation */
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: scale(0.9);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+    /* Close Button */
+    .closeF {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .closeF:hover,
+    .closeF:focus {
+        color: #000;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    /* Scrollable Content */
+    .full-description {
+        max-height: 60vh;
+        overflow-y: auto;
+        line-height: 1.6;
+        color: #333;
+        
+    }
     </style>
      <script>
     window.dataLayer = window.dataLayer || [];

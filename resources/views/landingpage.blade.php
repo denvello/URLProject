@@ -203,7 +203,7 @@
 <!-- Sections WELCOME -->    
     <div class="section" id="home">
         <div class="container">
-            <h1>Selamat bergabung di cekduluah.com</h1>
+            <h1>Selamat bergabung di cekduluaja.com</h1>
             <p> {{ $projectText }}</p>
             <br>
             <p> {{ $projectText2 }}</p>
