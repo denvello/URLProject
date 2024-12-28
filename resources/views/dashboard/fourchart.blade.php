@@ -24,23 +24,28 @@
         <h3>Jumlah Berita :  {{ $counts['news_count'] }}</h3>
         <canvas id="newsChart"></canvas>
     </div>
-
+    <br>
     <!-- Chart 2: Jumlah Komentar -->
     <div class="chart-item">
         <h3>Jumlah Komentar : {{ $counts['comments_count'] }}</h3>
         <canvas id="commentsChart"></canvas>
     </div>
-
+    <br>
     <!-- Chart 3: Jumlah Reply Komentar -->
     <div class="chart-item">
         <h3>Jumlah Reply Komentar : {{ $counts['replies_count'] }}</h3>
         <canvas id="repliesChart"></canvas>
     </div>
-
+    <br>
     <!-- Chart 4: Jumlah Input Search -->
     <div class="chart-item">
         <h3>Jumlah Input Search : {{ $counts['search_logs_count'] }}</h3>
         <canvas id="searchChart"></canvas>
+    </div>
+    <br>
+    <div class="chart-item">
+        <h3>Jumlah Search Type</h3>
+        <canvas id="searchTypeChart"></canvas>
     </div>
 </div>
 <button id="loadMoreButton">Load More</button>
@@ -51,6 +56,7 @@
         <canvas id="yearlyChart"></canvas>
     </div>
 </div>
+
 @endsection
 
 @push('scripts')
@@ -137,6 +143,57 @@
             }]
         }
     });
+
+    // Chart 5: Search Type per Day
+    const searchTypeCtx = document.getElementById('searchTypeChart').getContext('2d');
+    new Chart(searchTypeCtx, {
+        type: 'bar',
+        data: {
+            labels: @json($chartData['search_type']['labels']),
+            datasets: [
+                {
+                    label: 'Word',
+                    data: @json($chartData['search_type']['word']),
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1,
+                },
+                {
+                    label: 'URL',
+                    data: @json($chartData['search_type']['url']),
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1,
+                },
+                {
+                    label: 'Numeric',
+                    data: @json($chartData['search_type']['numeric']),
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1,
+                },
+                {
+                    label: 'Product',
+                    data: @json($chartData['search_type']['product']),
+                    backgroundColor: 'rgba(153, 102, 255, 0.2)',
+                    borderColor: 'rgba(153, 102, 255, 1)',
+                    borderWidth: 1,
+                },
+            ],
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    stacked: true, // Untuk menumpuk bar pada satu tanggal
+                },
+                y: {
+                    beginAtZero: true,
+                },
+            },
+        },
+    });
+
 
     
     // Load yearly data on button click

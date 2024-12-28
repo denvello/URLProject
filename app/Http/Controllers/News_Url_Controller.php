@@ -695,9 +695,9 @@ class News_Url_Controller extends Controller
                 'id' => $newsUrl->id, 
                 'title' => $newsUrl->title, 
                 'urlslug' => $newsUrl->url_slug,
-                ])->with('success', 'Produk berhasil disimpan!');
+                ])->with('success', 'Link baru berhasil disimpan!');
         }
-        return back()->with('error', 'Gagal menyimpan berita.');    
+        return back()->with('error', 'Gagal menyimpan link.');    
 
     }
 
@@ -2042,8 +2042,21 @@ public function saveCommentReply(Request $request, $commentId)
             ->whereYear('created_at', $currentYear)
             ->groupBy('date')
             ->orderBy('date')
-            ->get();    
-
+            ->get();
+                
+        // Data untuk chart kelima
+        $searchTypeData = SearchLog::selectRaw('
+                DATE(created_at) as date, 
+                SUM(CASE WHEN search_type = "word" THEN 1 ELSE 0 END) as word,
+                SUM(CASE WHEN search_type = "url" THEN 1 ELSE 0 END) as url,
+                SUM(CASE WHEN search_type = "numeric" THEN 1 ELSE 0 END) as `numeric`,
+                SUM(CASE WHEN search_type = "product" THEN 1 ELSE 0 END) as product
+            ')
+            ->whereMonth('created_at', $currentMonth)
+            ->whereYear('created_at', $currentYear)
+            ->groupBy('date')
+            ->orderBy('date')
+            ->get();
         // Siapkan data untuk grafik
         // Format data untuk chart.js
         $chartData = [
@@ -2062,6 +2075,13 @@ public function saveCommentReply(Request $request, $commentId)
             'search' => [
                 'labels' => $newsDataSearch->pluck('date')->map(fn($date) => Carbon::parse($date)->format('d M')),
                 'data' => $newsDataSearch->pluck('count')->toArray(),
+            ],
+            'search_type' => [
+            'labels' => $searchTypeData->pluck('date')->map(fn($date) => \Carbon\Carbon::parse($date)->format('d M')),
+            'word' => $searchTypeData->pluck('word')->toArray(),
+            'url' => $searchTypeData->pluck('url')->toArray(),
+            'numeric' => $searchTypeData->pluck('numeric')->toArray(),
+            'product' => $searchTypeData->pluck('product')->toArray(),
             ],
         ];
         // Menghitung jumlah data
@@ -2105,6 +2125,8 @@ public function saveCommentReply(Request $request, $commentId)
         
         return response()->json(['yearlyData' => $yearlyData]);
     }
+
+    
     
     // Proses otorisasi untuk admin
     public function authenticate(Request $request)
