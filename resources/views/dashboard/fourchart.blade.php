@@ -182,17 +182,23 @@
             ],
         },
         options: {
-            responsive: true,
-            scales: {
-                x: {
-                    stacked: true, // Untuk menumpuk bar pada satu tanggal
-                },
-                y: {
-                    beginAtZero: true,
-                },
+        responsive: true,
+        plugins: {
+            legend: {
+                display: true, // Tampilkan legenda
+                position: 'top',
             },
         },
-    });
+        scales: {
+            x: {
+                stacked: false, // Tidak ditumpuk
+            },
+            y: {
+                beginAtZero: true, // Mulai dari 0
+            },
+        },
+    },
+});
 
 
     
