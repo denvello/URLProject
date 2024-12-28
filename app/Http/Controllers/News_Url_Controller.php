@@ -2182,7 +2182,30 @@ public function saveCommentReply(Request $request, $commentId)
         return view('dashboard.feedback_detail', compact('feedbacks', 'sortBy', 'direction'));
     }
     
-    
+    public function userGrowth()
+    {
+        $currentMonth = now()->month;
+        $currentYear = now()->year;
+
+        // Ambil data jumlah user yang registrasi per hari
+        $userGrowthData = User::selectRaw('
+            DATE(created_at) as date, 
+            COUNT(*) as count
+        ')
+        ->whereMonth('created_at', $currentMonth)
+        ->whereYear('created_at', $currentYear)
+        ->groupBy('date')
+        ->orderBy('date')
+        ->get();
+
+        // Siapkan data untuk chart.js
+        $chartData = [
+            'labels' => $userGrowthData->pluck('date')->map(fn($date) => Carbon::parse($date)->format('d M')),
+            'data' => $userGrowthData->pluck('count')->toArray(),
+        ];
+
+        return view('dashboard.usergrowth', compact('chartData'));
+    }
 
    
 

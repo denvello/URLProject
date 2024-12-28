@@ -104,6 +104,6 @@ Route::get('/dashboard/news-chart', [News_Url_Controller::class, 'newsChart'])->
 Route::get('/dashboard/comment-chart', [News_Url_Controller::class, 'commentChart'])->name('dashboard.comment_chart');
 Route::get('/dashboard/fourchart', [News_Url_Controller::class, 'fourChart'])->name('dashboard.fourchart');
 Route::get('/charts/yearly', [News_Url_Controller::class, 'loadYearlyData'])->name('dashboard.fourchartyearly');
-
+Route::get('/dashboard/user-growth', [News_Url_Controller::class, 'userGrowth'])->name('dashboard.userGrowth');
 
 
