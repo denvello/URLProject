@@ -44,7 +44,7 @@
     </div>
     <br>
     <div class="chart-item">
-        <h3>Jumlah Search Type</h3>
+        <h3>Jumlah Search Type : {{ $counts['totalSearchTypeCount'] }}</h3>
         <canvas id="searchTypeChart"></canvas>
     </div>
 </div>

@@ -2057,6 +2057,12 @@ public function saveCommentReply(Request $request, $commentId)
             ->groupBy('date')
             ->orderBy('date')
             ->get();
+
+        // Tambahkan jumlah total untuk semua kategori
+        $totalSearchTypeCount = $searchTypeData->reduce(function ($carry, $item) {
+            return $carry + $item->word + $item->url + $item->numeric + $item->product;
+        }, 0);
+    
         // Siapkan data untuk grafik
         // Format data untuk chart.js
         $chartData = [
@@ -2090,6 +2096,7 @@ public function saveCommentReply(Request $request, $commentId)
         'comments_count' => $newsDataComment->sum('count'),
         'replies_count' => $newsDataReply->sum('count'),
         'search_logs_count' => $newsDataSearch->sum('count'),
+        'totalSearchTypeCount' => $totalSearchTypeCount,
     ];
         // dd($chartData);
         return view('dashboard.fourchart', compact('chartData','counts'));
