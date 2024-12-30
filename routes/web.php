@@ -15,7 +15,8 @@ use App\Http\Controllers\PDFController;
 //Rute utama
 Route::get('/', [News_Url_Controller::class, 'showdulu'])->name('home');
 
-Route::get('landing', [News_Url_Controller::class, 'landing'])->name('info.landing');;
+Route::get('landing', [News_Url_Controller::class, 'landing'])->name('info.landing');
+Route::get('landingprod', [News_Url_Controller::class, 'landingprod'])->name('info.landingprod');;
 Route::get('/download-pdf', [News_Url_Controller::class, 'downloadPDF'])->name('download.pdf');
 Route::get('/preview-pdf', [News_Url_Controller::class, 'previewPDF'])->name('preview.pdf');
 

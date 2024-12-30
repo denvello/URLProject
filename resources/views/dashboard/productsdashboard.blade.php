@@ -43,19 +43,20 @@
 
 @section('content')
 <div class="table-wrapper">
-    <h2>Daftar Produk</h2>
+    <h2>Daftar Produk : ({{ $products->total() }})</h2>
     <br>
     <!-- Search Form -->
-    <div class="search-container" style="margin-bottom: 20px;">
-        <form action="{{ route('dashboard.productscari') }}" method="GET">
-            <input type="text" name="search" placeholder="Cari nama produk, deskripsi, atau username" 
-                   value="{{ request('search') }}" 
-                   style="padding: 10px; width: 300px; border: 1px solid #ccc; border-radius: 5px;">
-            <button type="submit" style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">
-                Cari
-            </button>
-        </form>
-    </div>
+   
+    <div class="search-container" style="margin-bottom: 20px; display: flex; justify-content: flex-start; align-items: center;">
+    <form action="{{ route('dashboard.productscari') }}" method="GET" style="display: flex; align-items: center;">
+        <input type="text" name="search" placeholder="Cari nama produk, deskripsi, atau username" 
+               value="{{ request('search') }}" 
+               style="padding: 10px; width: 500px; border: 1px solid #ccc; border-radius: 5px; margin-right: 10px;">
+        <button type="submit" style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">
+            Cari
+        </button>
+    </form>
+</div>
 
     <!-- Table -->
     <table>
@@ -85,8 +86,13 @@
             <tr>
                 <td>{{ $product->id }}</td>
                 <td>{{ $product->product_name }}</td>
-                <td>{{ strip_tags(Str::limit($product->product_description, 50)) }}</td>
+                <!-- <td>{{ strip_tags(Str::limit($product->product_description, 50)) }}</td> -->
                 <!-- <td>{{!! Str::limit($product->product_description, 100) !!}}</td> -->
+                <td>
+                    <a href="javascript:void(0)" onclick="handleCardClick({{ $product->id }}, 'description')" style="text-decoration: none; color: inherit;">
+                        {{ strip_tags(Str::limit($product->product_description, 50)) }}
+                    </a>
+                </td> 
                 <td> 
                 @if (!empty($product->product_image1_url))
                     <img src="{{ Storage::url($product->product_image1_url) }}" 
@@ -157,6 +163,18 @@
                 <td>{{ \Carbon\Carbon::parse($product->updated_at)->format('d M Y, H:i') }}</td>
                 <td>{{ $product->username }}</td>
             </tr>
+            <!-- Modal for each product -->
+            <div id="description-modal-{{ $product->id }}" class="modal">
+                    <div class="modal-content">
+                        <span class="close" onclick="closeModalF({{ $product->id }})">&times;</span>
+                        <h2>{{ $product->product_name }}</h2>
+                        <div class="full-description">
+                            {{ strip_tags($product->product_description) }}
+                        </div>
+                        <button class="close-btn" onclick="closeModalF({{ $product->id, 'description' }})">×</button>
+                       
+                    </div>
+                </div>
             @endforeach
         </tbody>
     </table>
@@ -200,5 +218,31 @@ function closeModal(event) {
     }
 }
 
+function closeModalF(itemId, type) {
+        const modal = document.getElementById(`${type}-modal-${itemId}`);
+        if (modal) {
+            modal.style.display = 'none';
+        }
+    }
+
+
+function handleCardClick(itemId, type) {
+        const modal = document.getElementById(`${type}-modal-${itemId}`);
+        if (modal) {
+            modal.style.display = 'flex';
+        }
+    }
+
+ // Close the modal when clicking outside
+ window.onclick = function (event) {
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach(modal => {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    };    
+
 </script>
+
 @endsection

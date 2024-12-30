@@ -489,7 +489,7 @@
                     <a href="{{ route('profile.show', Auth::user()->id) }}" style="text-decoration: none; color: inherit;">
                         {{ Auth::user()->name }}
                     </a>
-                    <a href="{{ route('info.landing') }}" style="text-decoration: none; color: inherit;">
+                    <a href="{{ route('info.landingprod') }}" style="text-decoration: none; color: inherit;">
                        [?] 
                     </a>  
                 </span>

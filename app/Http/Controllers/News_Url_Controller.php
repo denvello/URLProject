@@ -1695,6 +1695,12 @@ public function saveCommentReply(Request $request, $commentId)
         return view('landingpage', compact('projectText'));
     } 
 
+    public function landingprod()
+    {
+       
+        return view('landingproduct');
+    } 
+
     public function landing()
     {
         try {

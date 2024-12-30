@@ -66,11 +66,6 @@
                 <tr>
                     <td>{{ $feedback->id }}</td>
                     <td>{{ $feedback->title }}</td>
-                    <!-- <td>
-                        <a href="#" data-bs-toggle="modal" data-bs-target="#descriptionModal{{ $feedback->id }}">
-                            {{ Str::limit($feedback->description, 50) }}
-                        </a>
-                    </td> -->
                     <td>
                         <a href="javascript:void(0)" onclick="handleCardClick({{ $feedback->id }})" style="text-decoration: none; color: inherit;">
                             {{ Str::limit($feedback->description, 100) }}
@@ -82,35 +77,7 @@
                     <td>{{ $feedback->upvotes }}</td>
                     <td>{{ $feedback->downvotes }}</td>
                 </tr>
-            <!-- Modal -->
-            <!-- <div class="modal fade" id="descriptionModal{{ $feedback->id }}" tabindex="-1" aria-labelledby="descriptionModalLabel{{ $feedback->id }}" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="descriptionModalLabel{{ $feedback->id }}">Description Details</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            {{ $feedback->description }}
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>     -->
-            <!-- <div id="modal-{{ $feedback->id }}" class="modal">
-                <div class="modal-content">
-                    <span class="close" onclick="closeModal({{ $feedback->id }})">&times;</span>
-                    <h2>{{ $feedback->title }}</h2>
-                    <div contenteditable="true" id="description" style="text-align: justify; border: 1px solid #ccc; padding: 10px; border-radius: 5px; min-height: 150px;">
-                        <p class="full-description">
-                            {{ $feedback->description }}
-                        </p>
-                    </div>
-                </div>
-            </div>          -->
-            <!-- Modal Template -->
+           
             @foreach ($feedbacks as $feedback)
             <div id="modal-{{ $feedback->id }}" class="modal">
                 <div class="modal-contentF">
