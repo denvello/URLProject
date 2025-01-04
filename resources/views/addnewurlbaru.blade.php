@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tambah Data URL Baru [cekduluaja.com]</title>
+    <title>Tambah Data Baru [cekduluaja.com]</title>
     <link rel="icon" type="image/x-icon" href="{{ asset('/img/cekduluaja-kotak.png') }}">
 
 	<style>
@@ -117,16 +117,16 @@
 <body>
 
 	<div class="container">
-		<h3>Tambah Data URL Baru</h3>
+		<h3>Tambah Data Baru</h3>
 		<a href="javascript:history.back()">Kembali</a>	
 		<br/>
 		<form action="/simpannewurlbaru" method="POST" enctype="multipart/form-data">
 			@csrf
 
 			<!-- Input URL -->
-			<!-- <label for="find">Tambah URL Baru</label> -->
+			<!-- <label for="find">Tambah Data Baru</label> -->
 			<div class="input-container">
-                <label for="find">Tambah URL Baru</label>
+                <label for="find">Tambah Data Baru Dari Input</label>
                 <p id="find-display">{{ old('find', session('search_keyword', '')) }}</p>
                 <input type="hidden" name="find" id="find" value="{{ old('find', session('search_keyword', '')) }}">
             </div>
@@ -139,7 +139,7 @@
             <textarea name="title" id="title" rows="3" required maxlength="500" 
             pattern="^[^<>]*$/?" 
             title="Karakter HTML tidak diperbolehkan">{{ session('metadata_title', '') }}</textarea> -->
-            <label for="title">Tambah Judul URL</label>
+            <label for="title">Tambah Judul Data</label>
 
             <textarea 
                 name="title" 
@@ -171,7 +171,7 @@
                 });
             </script>
 			<!-- Gambar Metadata -->
-			<label for="image">Gambar Metadata</label>
+			<label for="image">Gambar Data</label>
 			@if(session('metadata_image'))
 				<div class="image-preview" id="imagePreview">
 					<img src="{{ session('metadata_image') }}" alt="Metadata Image" id="imagePreviewImage">
@@ -180,7 +180,7 @@
 			<input type="file" id="image" name="image" accept="image/*" onchange="previewImage(event)">
 
 			<!-- Deskripsi Metadata -->
-			<label for="description">Deskripsi Metadata</label>
+			<label for="description">Deskripsi Data</label>
 			<textarea name="description" id="description" rows="5">{{ session('metadata_description', '') . ' | Author: ' . session('metadata_author', '') }}</textarea>
             @error('description')
                 <div style="color: red;">{{ $message }}</div>

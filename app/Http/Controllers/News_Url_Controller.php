@@ -398,7 +398,6 @@ class News_Url_Controller extends Controller
         } else {
             $searchType = 'word';
         }
-      
         
 
     // Simpan pencarian
@@ -412,10 +411,10 @@ class News_Url_Controller extends Controller
             'search_count' => \DB::raw('search_count + 1'),
         ]
     );
-
+   
         $newsData = NewsUrlModel::where('url', 'like', '%' . $find . '%')
                 ->orWhere('title', 'like', '%' . $find . '%')
-                ->orWhere('desc', 'like', '%' . $find . '%')
+                // ->orWhere('desc', 'like', '%' . $find . '%')
                 ->withCount('comments_join') // Menghitung jumlah komentar
                 ->orderBy('created_at', 'desc')
                 ->paginate(15); // Pagination dengan 15 data per halaman  
@@ -427,21 +426,26 @@ class News_Url_Controller extends Controller
                     ]);
             } else {
                      // Jika tidak ada hasil, jalankan `fetchMetadata` dan kirim hasilnya ke view
-                    $metadata = $this->fetchMetadata($find);
-                    session(['metadata' => $metadata]); // Simpan ke session untuk akses berikutnya metode dalam array
-                    // Simpan judul & deskripsi, author metadata ke dalam session
-                    session(['metadata_title' => $metadata['title'] ?? 'judul tidak tersedia']);
-                    session(['metadata_description' => $metadata['description'] ?? 'Deskripsi tidak tersedia']);
-                    session(['metadata_author' => $metadata['author'] ?? 'Author tidak tersedia']);
-                    // Simpan gambar metadata ke dalam session
-                    session(['metadata_image' => $metadata['image'] ?? '']);
+                    if ($searchType === 'url') { 
+                        $metadata = $this->fetchMetadata($find);
+                    } elseif ($searchType === 'numeric' || $searchType === 'word') {    
+                        $metadata = "";
+                    }       
+                        session(['metadata' => $metadata]); // Simpan ke session untuk akses berikutnya metode dalam array
+                        // Simpan judul & deskripsi, author metadata ke dalam session
+                        session(['metadata_title' => $metadata['title'] ?? '']);
+                        session(['metadata_description' => $metadata['description'] ?? '']);
+                        session(['metadata_author' => $metadata['author'] ?? '']);
+                        // Simpan gambar metadata ke dalam session
+                        session(['metadata_image' => $metadata['image'] ?? '']);
 
-                    return view('searchdulu', [
-                        'newsData' => [], // Tidak ada hasil pencarian
-                        'find' => $find,
-                        'metadata' => $metadata, // Hasil metadata
-                    ]);
-            }          
+                        return view('searchdulu', [
+                            'newsData' => [], // Tidak ada hasil pencarian
+                            'find' => $find,
+                            'metadata' => $metadata, // Hasil metadata
+                        ]);
+            }
+   
    }
 
    public function searchduluprod(Request $request)
