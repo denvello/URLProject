@@ -478,19 +478,15 @@
 
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
-        <h2>Dashboard Menu</h2>
+        <h2>User Dashboard Menu</h2>
         <ul class="menu">
         
             <li><a href="#profile">Home</a></li>
-            <li><a href="{{ route('dashboard.userprofile') }}">User Profile</a></li>
-            <li><a href="{{ route('dashboard.users') }}">User List</a></li>
+           
             <li><a href="{{ route('dashboard.news.comments') }}">URL Links</a></li>
             <li><a href="{{ route('dashboard.products') }}">Products List</a></li>
             <li><a href="{{ route('dashboard.feedback-detail') }}">Feedback Wall</a></li>
-            <!-- <li><a href="{{ route('dashboard.news_chart') }}">News Chart</a></li> -->
-            <li><a href="{{ route('dashboard.userGrowth') }}">Users Growth Chart</a></li>
-            <li><a href="{{ route('dashboard.comment_chart') }}">Comment Chart</a></li>
-            <li><a href="{{ route('dashboard.fourchart') }}">Board Chart</a></li>
+         
             <li></li>
     
             <li><a href="/">Back Home</a></li>

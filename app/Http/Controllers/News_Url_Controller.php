@@ -2156,16 +2156,23 @@ public function saveCommentReply(Request $request, $commentId)
 
         // Ambil user berdasarkan email
         $user = User::where('email', $request->email)->first();
-
+        // $role = $user->role;
         // Cek apakah user ada, role-nya admin (role = 1), dan password benar
         if ($user && $user->role == 1 && Hash::check($request->password, $user->password)) {
             Auth::login($user); // Login user
             $token = Auth::user()->remember_token;
             // Menyimpan token ke cookie menggunakan Cookie facade Laravel
-           Cookie::queue('user_token', $token, 43200); // Cookie bertahan selama 30 hari
-           
+            Cookie::queue('user_token', $token, 43200); // Cookie bertahan selama 30 hari
             return view ('mydashboard');
-        }
+
+        // } elseif ($user && Hash::check($request->password, $user->password)) {
+        //     Auth::login($user); // Login user
+        //     $token = Auth::user()->remember_token;
+        //     // Menyimpan token ke cookie menggunakan Cookie facade Laravel
+        //     Cookie::queue('user_token', $token, 43200); // Cookie bertahan selama 30 hari
+        //     $role = $user->role ?? ''; // Set default role jika NULL
+        //     return view ('myuserdashboard');
+        }    
 
         // Jika gagal, kembalikan ke halaman login dengan pesan error
         return back()->withErrors(['login' => 'Email atau password salah, atau Anda bukan admin.']);

@@ -545,6 +545,7 @@
                 </span>
             @endif
         </div>
+        <h3 style= color:Red>"Lebih Tahu - Lebih Baik!" </h3>
         <!-- Menampilkan logo -->
         <img src="{{ asset('img/cekduluajalogo.png') }}" alt="Logo" class="logo"> 
         <!-- Form untuk pencarian -->
@@ -564,7 +565,10 @@
                 <a href="/showindexprod" class="btn-link">Daftar Promo</a>
                 
             </div>
-            <h4 style= color:Red>"Cek Dulu Aja, Lebih Tahu - Lebih Baik!" </h4>
+            <!-- <h4 style= color:Red>"Cek Dulu Aja, Lebih Tahu - Lebih Baik!" </h4> -->
+            <br>
+            <br>
+            <h6 style= "color:grey; margin-bottom: 10px;">"Disclaimer : Platform tidak bertanggung-jawab atas konten pengguna." </h6>
         </form>
 
             @if(session('success'))

@@ -169,6 +169,7 @@
         </form>
         <div class="button-group">
             <a href="{{ route('caridulu') }}">Ke Halaman Utama</a>
+            <!-- <a href="{{ route('admin.login') }}">Ke Halaman Dashboard User</a> -->
             <a href="{{ route('feedback.index') }}">Ke Halaman Feedback</a>
         </div>
     </div>
