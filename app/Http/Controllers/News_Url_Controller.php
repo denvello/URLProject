@@ -1918,6 +1918,33 @@ public function saveCommentReply(Request $request, $commentId)
         return view('dashboard.newscomment', compact('news'));
     }
 
+    public function showNewsWithCommentsUser(Request $request)
+    {
+        // Ambil user_id dari pengguna yang login
+        $userId = auth()->id();
+
+        // Ambil keyword pencarian dari kolom search
+        $searchKeyword = $request->input('search');
+
+        // Query data berita yang sesuai dengan user_id
+        $news = Newsurlmodel::with(['comments_join' => function ($query) {
+            $query->orderBy('created_at', 'desc')
+                ->with(['commentReplies' => function ($query) {
+                    $query->orderBy('created_at', 'desc');
+                }]);
+        }])
+        ->where('news_user_id', $userId) // Filter sesuai user_id
+        ->when($searchKeyword, function ($query) use ($searchKeyword) {
+            $query->where('title', 'LIKE', "%$searchKeyword%"); // Cari berdasarkan judul
+        })
+        ->orderBy('created_at', 'desc') // Urutkan berdasarkan waktu terbaru
+        ->paginate(10); // Pagination
+
+        // Kirim data ke view
+        return view('dashboarduser.newscommentuser', compact('news', 'searchKeyword'));
+
+    }
+
     public function indexprod(Request $request)
     {
         
@@ -1932,6 +1959,28 @@ public function saveCommentReply(Request $request, $commentId)
             // dd($products);
 
         return view('dashboard.productsdashboard', compact('products'));
+    }
+
+    public function indexproduser(Request $request)
+    {
+        
+        // Sorting logic
+        $sortBy = $request->get('sort_by', 'created_at');
+        $direction = $request->get('direction', 'desc');
+
+        // Ambil user_id dari pengguna yang login
+        $userId = auth()->id();
+
+        // Ambil keyword pencarian dari kolom search
+        $searchKeyword = $request->input('search');
+
+        $products = Product::select('products.*', 'users.name as username')
+            ->leftJoin('users', 'products.product_user_id', '=', 'users.id')
+            ->where('product_user_id', $userId) 
+            ->orderBy($sortBy, $direction)
+            ->paginate(20);
+        return view('dashboarduser.productsdashboarduser', compact('products'));
+
     }
 
     public function indexprodcari(Request $request)
@@ -2165,13 +2214,13 @@ public function saveCommentReply(Request $request, $commentId)
             Cookie::queue('user_token', $token, 43200); // Cookie bertahan selama 30 hari
             return view ('mydashboard');
 
-        // } elseif ($user && Hash::check($request->password, $user->password)) {
-        //     Auth::login($user); // Login user
-        //     $token = Auth::user()->remember_token;
-        //     // Menyimpan token ke cookie menggunakan Cookie facade Laravel
-        //     Cookie::queue('user_token', $token, 43200); // Cookie bertahan selama 30 hari
-        //     $role = $user->role ?? ''; // Set default role jika NULL
-        //     return view ('myuserdashboard');
+        } elseif ($user && Hash::check($request->password, $user->password)) {
+            Auth::login($user); // Login user
+            $token = Auth::user()->remember_token;
+            // Menyimpan token ke cookie menggunakan Cookie facade Laravel
+            Cookie::queue('user_token', $token, 43200); // Cookie bertahan selama 30 hari
+            $role = $user->role ?? ''; // Set default role jika NULL
+            return view ('myuserdashboard');
         }    
 
         // Jika gagal, kembalikan ke halaman login dengan pesan error
@@ -2200,10 +2249,25 @@ public function saveCommentReply(Request $request, $commentId)
         ->leftJoin('users', 'feedbacks.user_id', '=', 'users.id') // Add join for user name
         ->orderBy(request('sort_by', 'created_at'), request('sort_direction', 'desc')) // Default sorting
         ->paginate(20);
-    
-
 
         return view('dashboard.feedback_detail', compact('feedbacks', 'sortBy', 'direction'));
+    }
+
+    public function indexFeedbackuser(Request $request)
+    {
+        // Ambil user_id dari pengguna yang login
+        $userId = auth()->id();
+
+        // Handle sorting
+        $sortBy = $request->get('sort_by', 'id'); // Default sort column
+        $direction = $request->get('direction', 'asc'); // Default direction
+        $feedbacks = Feedback::select('feedbacks.*', 'users.name as username')
+        ->leftJoin('users', 'feedbacks.user_id', '=', 'users.id') // Add join for user name
+        ->where('user_id', $userId) 
+        ->orderBy(request('sort_by', 'created_at'), request('sort_direction', 'desc')) // Default sorting
+        ->paginate(20);
+
+        return view('dashboarduser.feedback_detailuser', compact('feedbacks', 'sortBy', 'direction'));
     }
     
     public function userGrowth()

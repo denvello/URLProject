@@ -106,5 +106,7 @@ Route::get('/dashboard/comment-chart', [News_Url_Controller::class, 'commentChar
 Route::get('/dashboard/fourchart', [News_Url_Controller::class, 'fourChart'])->name('dashboard.fourchart');
 Route::get('/charts/yearly', [News_Url_Controller::class, 'loadYearlyData'])->name('dashboard.fourchartyearly');
 Route::get('/dashboard/user-growth', [News_Url_Controller::class, 'userGrowth'])->name('dashboard.userGrowth');
-
-
+//user dashboard
+Route::get('/dashboarduser/newscommentsuser', [News_Url_Controller::class, 'showNewsWithCommentsUser'])->name('dashboarduser.news.commentsuser');
+Route::get('/dashboarduser/productsuser', [News_Url_Controller::class, 'indexproduser'])->name('dashboarduser.productsuser');
+Route::get('/dashboarduser/feedback-detailuser', [News_Url_Controller::class, 'indexFeedbackuser'])->name('dashboarduser.feedback-detailuser');

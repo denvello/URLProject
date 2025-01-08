@@ -478,14 +478,16 @@
 
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
+        <br>
+        <br>
         <h2>User Dashboard Menu</h2>
         <ul class="menu">
         
             <li><a href="#profile">Home</a></li>
            
-            <li><a href="{{ route('dashboard.news.comments') }}">URL Links</a></li>
-            <li><a href="{{ route('dashboard.products') }}">Products List</a></li>
-            <li><a href="{{ route('dashboard.feedback-detail') }}">Feedback Wall</a></li>
+            <li><a href="{{ route('dashboarduser.news.commentsuser') }}">My URL Links</a></li>
+            <li><a href="{{ route('dashboarduser.productsuser') }}">My Products List</a></li>
+            <li><a href="{{ route('dashboarduser.feedback-detailuser') }}">My Feedback Wall</a></li>
          
             <li></li>
     
@@ -494,12 +496,12 @@
     </div>
 
     <!-- Content -->
-    <div class="content" id="content">
+    <div class="content" id="contentuser">
     
         <button class="toggle-btn" id="toggle-btn">☰ Menu</button>
         <!-- <h1>Welcome to the Dashboard</h1>
         <p>Choose a menu from the sidebar to see details.</p> -->
-        @yield('content')
+        @yield('contentuser')
        
     </div>
 
