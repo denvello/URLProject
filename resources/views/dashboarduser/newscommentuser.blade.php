@@ -60,7 +60,7 @@
             <tbody>
             @forelse ($news as $newsItem)
                     <tr class="level-1">
-                        <!-- <td colspan="4">{{ $newsItem->title }} | oleh : {{ $newsItem->user->name }} | {{ $newsItem->created_at }} |  -->
+                        
                         <td colspan="4">    
                             <a href="{{ route('cari.showdetail', ['id' => $newsItem->id, 'title' => $newsItem->title, 'urlslug' => $newsItem->url_slug]) }}" 
                                 target="_blank" 

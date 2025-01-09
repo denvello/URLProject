@@ -45,20 +45,7 @@
 <div class="table-wrapper">
     <h2>Daftar Produk User : ({{ $products->total() }})</h2>
     <br>
-    <!-- Search Form -->
    
-    <!-- <div class="search-container" style="margin-bottom: 20px; display: flex; justify-content: flex-start; align-items: center;">
-    <form action="{{ route('dashboard.productscari') }}" method="GET" style="display: flex; align-items: center;">
-        <input type="text" name="search" placeholder="Cari nama produk, deskripsi, atau username" 
-               value="{{ request('search') }}" 
-               style="padding: 10px; width: 500px; border: 1px solid #ccc; border-radius: 5px; margin-right: 10px;">
-        <button type="submit" style="padding: 10px 20px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer;">
-            Cari
-        </button>
-    </form>
-    </div> -->
-
-    <!-- Table -->
     <table>
         <thead>
             <tr>
@@ -86,8 +73,6 @@
             <tr>
                 <td>{{ $product->id }}</td>
                 <td>{{ $product->product_name }}</td>
-                <!-- <td>{{ strip_tags(Str::limit($product->product_description, 50)) }}</td> -->
-                <!-- <td>{{!! Str::limit($product->product_description, 100) !!}}</td> -->
                 <td>
                     <a href="javascript:void(0)" onclick="handleCardClick({{ $product->id }}, 'description')" style="text-decoration: none; color: inherit;">
                         {{ strip_tags(Str::limit($product->product_description, 50)) }}
