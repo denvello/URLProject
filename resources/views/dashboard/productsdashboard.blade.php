@@ -79,6 +79,7 @@
                 <th onclick="sortTable('created_at')">Created Date</th>
                 <th onclick="sortTable('updated_at')">Updated Date</th>
                 <th onclick="sortTable('username')">Username</th>
+                <th>Status</th> 
             </tr>
         </thead>
         <tbody>
@@ -162,6 +163,13 @@
                 <td>{{ \Carbon\Carbon::parse($product->created_at)->format('d M Y, H:i') }}</td>
                 <td>{{ \Carbon\Carbon::parse($product->updated_at)->format('d M Y, H:i') }}</td>
                 <td>{{ $product->username }}</td>
+                <!-- Status Aktif Checkbox -->
+                <td>
+                    <input type="checkbox" 
+                        class="status-checkbox" 
+                        data-id="{{ $product->id }}" 
+                        {{ $product->statusprod == 1 ? 'checked' : '' }}>
+                    </td>
             </tr>
             <!-- Modal for each product -->
             <div id="description-modal-{{ $product->id }}" class="modal">
@@ -245,4 +253,33 @@ function handleCardClick(itemId, type) {
 
 </script>
 
+<!-- Script AJAX untuk update status -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.status-checkbox').change(function() {
+            const productId = $(this).data('id');
+            const isChecked = $(this).is(':checked') ? 1 : 0;
+
+            // Kirim request AJAX
+            $.ajax({
+                url: '{{ route("admin.updateStatusProd") }}',
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id: productId,
+                    statusprod: isChecked
+                },
+                success: function(response) {
+                    alert(response.message);
+                },
+                error: function(xhr) {
+                    alert('Error updating status!');
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+    });
+</script>
 @endsection
+

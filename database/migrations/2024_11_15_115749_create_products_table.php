@@ -31,7 +31,9 @@ return new class extends Migration
             $table->int('product_liked');
             $table->int('product_generated_qr_count');
             $table->int('product_qr_code_scanned');
+            $table->int('product_qr_code_scanned');
             $table->timestamps();  // Waktu dibuat dan diupdate
+            $table->boolean('statusprod')->default(true); 
             //$table->foreign('product_user_id')->references('id')->on('users');  // Definisikan Foreign Key
             // Definisikan Foreign Key untuk product_user_id
             $table->foreign('product_user_id')->references('id')->on('users')->onDelete('cascade');

@@ -66,6 +66,7 @@
                 <th onclick="sortTable('created_at')">Created Date</th>
                 <th onclick="sortTable('updated_at')">Updated Date</th>
                 <th onclick="sortTable('username')">Username</th>
+                <th>Status</th> 
             </tr>
         </thead>
         <tbody>
@@ -147,6 +148,11 @@
                 <td>{{ \Carbon\Carbon::parse($product->created_at)->format('d M Y, H:i') }}</td>
                 <td>{{ \Carbon\Carbon::parse($product->updated_at)->format('d M Y, H:i') }}</td>
                 <td>{{ $product->username }}</td>
+                <td>
+                    <input type="checkbox" 
+                           disabled 
+                           {{ $product->statusprod == 1 ? 'checked' : '' }}>
+                </td>
             </tr>
             <!-- Modal for each product -->
             <div id="description-modal-{{ $product->id }}" class="modal">

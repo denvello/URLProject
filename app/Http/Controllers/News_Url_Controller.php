@@ -126,7 +126,11 @@ class News_Url_Controller extends Controller
 
     public function showindexprod() 
     {
-    	$indexprod = DB::table('products')->orderBy('created_at', 'desc')->paginate(15);  
+    	// $indexprod = DB::table('products')->orderBy('created_at', 'desc')->paginate(15); 
+        $indexprod = Product::active() // Mengambil produk dengan status aktif
+        ->orderBy('created_at', 'desc') // Mengurutkan berdasarkan waktu pembuatan
+        ->paginate(15); // Membatasi 15 produk per halaman
+ 
         return view('homeindexprod',['home_index_prod' => $indexprod]);
     }
 
@@ -1917,7 +1921,7 @@ public function saveCommentReply(Request $request, $commentId)
                     $query->where('created_at', '>=', now()->subDays(30));
                 }]);
         }])->where('created_at', '>=', now()->subDays(90))->orderBy('created_at', 'desc')
-        
+
         ->when($searchKeyword, function ($query) use ($searchKeyword) {
             $query->where('title', 'LIKE', "%$searchKeyword%"); // Cari berdasarkan judul
         })
@@ -2306,19 +2310,39 @@ public function saveCommentReply(Request $request, $commentId)
 
 
     public function updateStatusNews(Request $request)
-{
-    $validated = $request->validate([
-        'id' => 'required|integer|exists:news_url,id',
-        'status' => 'required|boolean',
-    ]);
+    {
+        $validated = $request->validate([
+            'id' => 'required|integer|exists:news_url,id',
+            'status' => 'required|boolean',
+        ]);
 
-    $newsItem = NewsUrlModel::findOrFail($validated['id']);
-    $newsItem->status = $validated['status'];
-    $newsItem->save();
+        $newsItem = NewsUrlModel::findOrFail($validated['id']);
+        $newsItem->status = $validated['status'];
+        $newsItem->save();
 
-    return response()->json(['message' => 'Status updated successfully.']);
-}
+        return response()->json(['message' => 'Status updated successfully.']);
+    }
 
+    public function updateStatusProd(Request $request)
+    {
+        $validated = $request->validate([
+            'id' => 'required|integer|exists:products,id',
+            'statusprod' => 'required|boolean',
+        ]);
+
+         // Cari produk berdasarkan ID
+        $product = Product::findOrFail($validated['id']);
+        
+        // Update status
+        $product->statusprod = $validated['statusprod'];
+        $product->save();
+
+        return response()->json([
+            'message' => 'Status updated successfully.',
+        ]);
+
+    
+    }
 
    
 

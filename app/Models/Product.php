@@ -28,7 +28,8 @@ class Product extends Model
         'product_viewed',
         'product_liked',
         'product_generated_qr_count',
-        'product_user_id'
+        'product_user_id',
+        'product_statusprod'
 
     ];
 
@@ -87,5 +88,10 @@ class Product extends Model
                 $product->product_slug = Str::random(20); // 20 karakter acak
             }
         });
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('statusprod', 1);
     }
 }

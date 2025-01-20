@@ -110,5 +110,6 @@ Route::get('/dashboard/user-growth', [News_Url_Controller::class, 'userGrowth'])
 Route::get('/dashboarduser/newscommentsuser', [News_Url_Controller::class, 'showNewsWithCommentsUser'])->name('dashboarduser.news.commentsuser');
 Route::get('/dashboarduser/productsuser', [News_Url_Controller::class, 'indexproduser'])->name('dashboarduser.productsuser');
 Route::get('/dashboarduser/feedback-detailuser', [News_Url_Controller::class, 'indexFeedbackuser'])->name('dashboarduser.feedback-detailuser');
-//lainnya
+//lainnya 
 Route::post('/dashboard/update-status', [News_Url_Controller::class, 'updateStatusNews'])->name('admin.updateStatusNews');
+Route::post('/dashboard/update-statusprod', [News_Url_Controller::class, 'updateStatusProd'])->name('admin.updateStatusProd');
