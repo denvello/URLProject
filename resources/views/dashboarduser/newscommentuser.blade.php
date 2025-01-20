@@ -39,7 +39,7 @@
 @section('contentuser')
 <div class="table-wrapper">
     <div class="content-container">
-        <h1>Links User Link with Comments</h1>
+        <h1>Links User with Comments</h1>
 
          <!-- Form Pencarian -->
          <form method="GET" action="{{ route('dashboarduser.news.commentsuser') }}">
@@ -55,6 +55,7 @@
                     <th>User</th>
                     <th>Content</th>
                     <th>Timestamp</th>
+                    <th>Aktif</th>
                 </tr>
             </thead>
             <tbody>
@@ -70,6 +71,10 @@
                         <a href="{{ $newsItem->url }}" target="_blank" style="color: blue; text-decoration: underline;">
                             {{ $newsItem->url }}
                         </a> 
+                        </td>
+                         <!-- Status Aktif Checkbox -->
+                        <td>
+                            <input type="checkbox" disabled {{ $newsItem->status == 1 ? 'checked' : '' }}>
                         </td>
                     </tr>
                     @foreach ($newsItem->comments_join as $comment)
@@ -90,7 +95,7 @@
                     @endforeach
                 @empty
                     <tr>
-                        <td colspan="4">No news or comments found in the last 30 days.</td>
+                        <td colspan="5">No news or comments found in the last 30 days.</td>
                     </tr>
                 @endforelse
             </tbody>

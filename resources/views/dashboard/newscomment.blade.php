@@ -39,7 +39,15 @@
 @section('content')
 <div class="table-wrapper">
     <div class="content-container">
-        <h1>Links News with Comments (Last 30 Days)</h1>
+        <h1>Links News with Comments (Last 90 Days)</h1>
+
+         <!-- Form Pencarian Di Dashboard Admin -->
+         <form method="GET" action="{{ route('dashboard.news.comments') }}">
+            <input type="text" name="search" value="{{ request('search') }}" placeholder="Search links / url..." style="padding: 5px; width: 300px;">
+            <button type="submit" style="padding: 5px;">Search</button>
+        </form>
+        <br>
+
         <table class="news-table">
             <thead>
                 <tr>
@@ -47,12 +55,13 @@
                     <th>User</th>
                     <th>Content</th>
                     <th>Timestamp</th>
+                    <th>Aktif</th>
                 </tr>
             </thead>
             <tbody>
             @forelse ($news as $newsItem)
                     <tr class="level-1">
-                        <!-- <td colspan="4">{{ $newsItem->title }} | oleh : {{ $newsItem->user->name }} | {{ $newsItem->created_at }} |  -->
+                      
                         <td colspan="4">    
                             <a href="{{ route('cari.showdetail', ['id' => $newsItem->id, 'title' => $newsItem->title, 'urlslug' => $newsItem->url_slug]) }}" 
                                 target="_blank" 
@@ -63,6 +72,13 @@
                             {{ $newsItem->url }}
                         </a> 
                         </td>
+                            <!-- Status Aktif Checkbox -->
+                            <td>
+                                <input type="checkbox" 
+                                    class="status-checkbox" 
+                                    data-id="{{ $newsItem->id }}" 
+                                    {{ $newsItem->status == 1 ? 'checked' : '' }}>
+                            </td>
                     </tr>
                     @foreach ($newsItem->comments_join as $comment)
                         <tr class="level-2">
@@ -82,7 +98,7 @@
                     @endforeach
                 @empty
                     <tr>
-                        <td colspan="4">No news or comments found in the last 30 days.</td>
+                        <td colspan="5">No news or comments found in the last 30 days.</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -93,4 +109,32 @@
 <div class="paginationr">
     {{ $news->links() }}
 </div>
+
+<!-- Tambahkan Script untuk AJAX -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.status-checkbox').change(function() {
+            const newsId = $(this).data('id');
+            const isChecked = $(this).is(':checked') ? 1 : 0;
+
+            $.ajax({
+                url: '{{ route("admin.updateStatusNews") }}',
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id: newsId,
+                    status: isChecked
+                },
+                success: function(response) {
+                    alert(response.message);
+                },
+                error: function(xhr) {
+                    alert('Error updating status!');
+                }
+            });
+        });
+    });
+</script>
 @endsection
+

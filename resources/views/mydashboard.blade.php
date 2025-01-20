@@ -478,6 +478,8 @@
 
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
+        <br>
+        <br>
         <h2>Dashboard Menu</h2>
         <ul class="menu">
         

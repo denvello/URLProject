@@ -59,4 +59,9 @@ class Newsurlmodel extends Model
         'created_at' => 'datetime',
     ];
 
+    public function scopeActive($query)
+    {
+        return $query->where('status', 1);
+    }
+
 }

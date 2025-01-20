@@ -133,6 +133,8 @@ class News_Url_Controller extends Controller
     public function showindexurl() 
     {
         $newsData = NewsUrlModel::withCount('comments_join')
+            ->active() // Menggunakan scopeActive untuk memfilter status = 1
+            // ->where('status','1')
             ->orderBy('created_at', 'desc')
             ->paginate(15);
              //dd($newsData);
@@ -1903,15 +1905,22 @@ public function saveCommentReply(Request $request, $commentId)
         return view('mydashboard');
     }
 
-    public function showNewsWithComments()
+    public function showNewsWithComments(Request $request)
     {
-        // Fetch news from the last 30 days
+         // Ambil keyword pencarian dari kolom search
+         $searchKeyword = $request->input('search');
+
+        // Fetch news from the last 90 days
         $news = Newsurlmodel::with(['comments_join' => function ($query) {
-            $query->where('created_at', '>=', now()->subDays(30))->orderBy('created_at', 'desc')
+            $query->where('created_at', '>=', now()->subDays(90))->orderBy('created_at', 'desc')
                 ->with(['commentReplies' => function ($query) {
                     $query->where('created_at', '>=', now()->subDays(30));
                 }]);
-        }])->where('created_at', '>=', now()->subDays(30))->orderBy('created_at', 'desc')
+        }])->where('created_at', '>=', now()->subDays(90))->orderBy('created_at', 'desc')
+        
+        ->when($searchKeyword, function ($query) use ($searchKeyword) {
+            $query->where('title', 'LIKE', "%$searchKeyword%"); // Cari berdasarkan judul
+        })
         ->paginate(10);  
         // ->get();
         // dd($news->toArray());
@@ -2294,6 +2303,22 @@ public function saveCommentReply(Request $request, $commentId)
 
         return view('dashboard.usergrowth', compact('chartData'));
     }
+
+
+    public function updateStatusNews(Request $request)
+{
+    $validated = $request->validate([
+        'id' => 'required|integer|exists:news_url,id',
+        'status' => 'required|boolean',
+    ]);
+
+    $newsItem = NewsUrlModel::findOrFail($validated['id']);
+    $newsItem->status = $validated['status'];
+    $newsItem->save();
+
+    return response()->json(['message' => 'Status updated successfully.']);
+}
+
 
    
 
