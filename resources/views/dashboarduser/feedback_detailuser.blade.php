@@ -59,6 +59,7 @@
                 <th onclick="sortTable('created_at')">Feedback Date</th>
                 <th onclick="sortTable('upvotes')">Upvotes</th>
                 <th onclick="sortTable('downvotes')">Downvotes</th>
+                <th>Status Aktif</th>
             </tr>
         </thead>
         <tbody>
@@ -76,6 +77,10 @@
                     <td>{{ $feedback->created_at->format('d M Y H:i') }}</td>
                     <td>{{ $feedback->upvotes }}</td>
                     <td>{{ $feedback->downvotes }}</td>
+                     <!-- Status Aktif Checkbox -->
+                     <td>
+                        <input type="checkbox" disabled {{ $feedback->statusfeedback == 1 ? 'checked' : '' }}>
+                    </td>
                 </tr>
            
             @foreach ($feedbacks as $feedback)

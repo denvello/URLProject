@@ -59,6 +59,7 @@
                 <th onclick="sortTable('created_at')">Feedback Date</th>
                 <th onclick="sortTable('upvotes')">Upvotes</th>
                 <th onclick="sortTable('downvotes')">Downvotes</th>
+                <th>Status Aktif</th>
             </tr>
         </thead>
         <tbody>
@@ -76,6 +77,12 @@
                     <td>{{ $feedback->created_at->format('d M Y H:i') }}</td>
                     <td>{{ $feedback->upvotes }}</td>
                     <td>{{ $feedback->downvotes }}</td>
+                    <td>
+                        <input type="checkbox" 
+                        class="status-checkbox" 
+                        data-id="{{ $feedback->id }}" 
+                        {{ $feedback->statusfeedback == 1 ? 'checked' : '' }}>
+                    </td>
                 </tr>
            
             @foreach ($feedbacks as $feedback)
@@ -101,6 +108,33 @@
 <div class="pagination">
     {{ $feedbacks->appends(request()->except('page'))->links() }}
 </div>
+
+<!-- Tambahkan Script untuk AJAX -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('.status-checkbox').change(function() {
+            const feedId = $(this).data('id');
+            const isChecked = $(this).is(':checked') ? 1 : 0;
+
+            $.ajax({
+                url: '{{ route("admin.updateStatusFeed") }}',
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    id: feedId,
+                    statusfeedback: isChecked
+                },
+                success: function(response) {
+                    alert(response.message);
+                },
+                error: function(xhr) {
+                    alert('Error updating status!');
+                }
+            });
+        });
+    });
+</script>
 @endsection
 
 @push('scripts')

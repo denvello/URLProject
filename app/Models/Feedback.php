@@ -19,7 +19,8 @@ class Feedback extends Model
         'description',
         'category',
         'user_id',
-        'created_at'
+        'created_at',
+        'statusfeedback'
     ];
     
     public function votes()
@@ -45,5 +46,10 @@ class Feedback extends Model
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('statusfeedback', 1);
     }
 }

@@ -113,3 +113,4 @@ Route::get('/dashboarduser/feedback-detailuser', [News_Url_Controller::class, 'i
 //lainnya 
 Route::post('/dashboard/update-status', [News_Url_Controller::class, 'updateStatusNews'])->name('admin.updateStatusNews');
 Route::post('/dashboard/update-statusprod', [News_Url_Controller::class, 'updateStatusProd'])->name('admin.updateStatusProd');
+Route::post('/dashboard/update-statusfeed', [News_Url_Controller::class, 'updateStatusFeed'])->name('admin.updateStatusFeed');

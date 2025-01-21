@@ -1895,7 +1895,9 @@ public function saveCommentReply(Request $request, $commentId)
 
     public function indexfeed()
     {
-        $feedbacks = Feedback::with('user')->orderBy('created_at', 'desc')->paginate(9); // Mengambil umpan balik dengan relasi pengguna
+        $feedbacks = Feedback::with('user')
+        ->active()
+        ->orderBy('created_at', 'desc')->paginate(9); // Mengambil umpan balik dengan relasi pengguna
         return view('feedback', compact('feedbacks'));
     }
 
@@ -2245,19 +2247,6 @@ public function saveCommentReply(Request $request, $commentId)
         // Handle sorting
         $sortBy = $request->get('sort_by', 'id'); // Default sort column
         $direction = $request->get('direction', 'asc'); // Default direction
-
-        // Fetch feedback with relations and sort
-        // $feedbacks = Feedback::with('user', 'votes')
-        //     ->withCount([
-        //         'votes as upvotes' => function ($query) {
-        //             $query->where('type', 'up');
-        //         },
-        //         'votes as downvotes' => function ($query) {
-        //             $query->where('type', 'down');
-        //         },
-        //     ])
-        //     ->orderBy($sortBy, $direction)
-        //     ->paginate(10);
         $feedbacks = Feedback::select('feedbacks.*', 'users.name as username')
         ->leftJoin('users', 'feedbacks.user_id', '=', 'users.id') // Add join for user name
         ->orderBy(request('sort_by', 'created_at'), request('sort_direction', 'desc')) // Default sorting
@@ -2340,10 +2329,25 @@ public function saveCommentReply(Request $request, $commentId)
         return response()->json([
             'message' => 'Status updated successfully.',
         ]);
-
-    
     }
 
-   
+    public function updateStatusFeed(Request $request)
+    {
+        $validated = $request->validate([
+            'id' => 'required|integer|exists:feedbacks,id',
+            'statusfeedback' => 'required|boolean',
+        ]);
+
+         // Cari produk berdasarkan ID
+        $feedback = Feedback::findOrFail($validated['id']);
+        
+        // Update status
+        $feedback->statusfeedback = $validated['statusfeedback'];
+        $feedback->save();
+
+        return response()->json([
+            'message' => 'Status updated successfully.',
+        ]);
+    }
 
 }
