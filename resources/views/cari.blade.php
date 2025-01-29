@@ -13,7 +13,7 @@
 			margin:5px;
 		}
 	    </style>
-        <h2>www.malasngoding.com</h2>
+        
         <h3>Data News URL</h3>
         <p>Cari Data URL :</p>
         <a href="/home/cari">Home</a>

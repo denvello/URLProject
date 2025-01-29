@@ -40,13 +40,12 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class News_Url_Controller extends Controller
 {
-    public function home() {
-        //return view('news_url');
-        // mengambil data dari table pegawai
-    	$newsurl = DB::table('news_url')->get();
-    	// mengirim data pegawai ke view index	
-        return view('home',['news_url' => $newsurl]);
-    }
+    // public function home() {
+       
+    // 	$newsurl = DB::table('news_url')->get();
+    	
+    //     return view('home',['news_url' => $newsurl]);
+    // }
 
     public function find(Request $request)
 	{
@@ -97,32 +96,23 @@ class News_Url_Controller extends Controller
             //return view('newsurlcomments', ['newsurljoin' => $news]);
             return view('newsurlcomments', ['newsurljoin' => $news]);
         } else {
-            
-            //return view('cari', ['news_url' => [], 'find' => '']);
             return view('newsurlcomments', ['newsurljoin' => $news]);
         }
     }
 
-    Public function cari_old (Request $request) {
-        $find = $request->find;
-        if (!is_null($find) && trim($find) !== '') {
-            $news = DB::table('news_url')
-                ->where('url', 'like', "%" . $find . "%")
-                ->paginate(20);
-            return view('cari', ['news_url' => $news, 'find' => $find])->with('message', 'Hasil pencarian!');
-        } else {
-            return view('cari', ['news_url' => [], 'find' => '']);
-        }
-    }
-
-
-    // public function index() {
-       
-    // 	$index = DB::table('news_url')->orderBy('created_at', 'desc')->paginate(10);
-        
-    //     // mengirim data pegawai ke view index	
-    //     return view('carihomeindex',['home_index' => $index]);
+    // Public function cari_old (Request $request) {
+    //     $find = $request->find;
+    //     if (!is_null($find) && trim($find) !== '') {
+    //         $news = DB::table('news_url')
+    //             ->where('url', 'like', "%" . $find . "%")
+    //             ->paginate(20);
+    //         return view('cari', ['news_url' => $news, 'find' => $find])->with('message', 'Hasil pencarian!');
+    //     } else {
+    //         return view('cari', ['news_url' => [], 'find' => '']);
+    //     }
     // }
+
+
 
     public function showindexprod() 
     {
@@ -138,10 +128,10 @@ class News_Url_Controller extends Controller
     {
         $newsData = NewsUrlModel::withCount('comments_join')
             ->active() // Menggunakan scopeActive untuk memfilter status = 1
-            // ->where('status','1')
+           
             ->orderBy('created_at', 'desc')
             ->paginate(15);
-             //dd($newsData);
+             
         return view('homeindexurl', compact('newsData'));
     }
 
@@ -164,35 +154,22 @@ class News_Url_Controller extends Controller
     // Menampilkan halaman form pencarian LIKE GOOGLE
     public function showdulu(Request $request)
     {
-        // $find = $request->input('find');
-        // $searchKeyword = $request->input('title');
-        // session(['search_keyword' => $cleanUrl]);
-       
-       
+        
         $keyword = $request->input('keyword');
         $keyword = urldecode($keyword);
-        //dump($keyword);
+       
         $ipAddress = request()->ip();
         $userAgent = request()->header('User-Agent');
-        //dump($ipAddress, $userAgent);
-        // Ambil keyword dari session
-         
-        //  if (!$request->session()->has('url.intended')) {
-        //     $request->session()->put('url.intended', url()->previous());
-        //  }
-        //     // Redirect ke halaman sebelumnya
-        //     return redirect()->intended()->with('success', 'User return back page');
-
-
+       
         if (empty($keyword)) {
             $keyword = session('search_keyword', '');
             $keyword = session('url_slug', '');
-            //dump($keyword);
+            
         } 
         // Kosongkan session ID sebelum memulai pencarian
         session()->forget('news_url_id');
         $find = session('find', '');
-        //dump($find);
+       
         $urlslug = session('urlslug', '');
         session(['search_keyword' => $keyword]); //ini fungsi untuk mengisi keyword dari klik index view di show
             if (!empty($keyword)) {
@@ -208,38 +185,16 @@ class News_Url_Controller extends Controller
                 if ($news->isEmpty()) {
                     session()->forget('news_url_id'); // Menghapus session news_url_id
                     session()->forget('url_slug'); 
-                // } else {
-                    // Jika ada hasil, simpan ID dari hasil pertama ke session
-                    //session(['news_url_id' => $news[0]->id]);
+               
                 }
-                // Return view dengan hasil pencarian
-                // return view('showdetail', [
+              
                 return view('searchdulu', [
                     'newsurljoin' => $news,
                     'find' => $keyword,
                 ]);
             }
 
-            // if (!empty($find)) {
-                
-            //     $news = NewsUrlSimple::where('url', 'like', '%' . $keyword . '%')
-            //     ->orWhere('title', 'like', '%' . $keyword . '%')
-            //     ->orderBy('created_at', 'desc')
-               
-            //     ->get();
-                
-            //     if ($news->isEmpty()) {
-            //         session()->forget('news_url_id'); // Menghapus session news_url_id
-            //         session()->forget('url_slug'); // Menghapus session news_url_id
-                
-            //     }
-
-            //     return view('searchdulu', [
-            //         'newsurljoin' => $news,
-            //         'find' => $keyword,
-            //     ]);
-            // }
-
+          
             if (!empty($urlslug)) {
             
                 $news = NewsUrlSimple::where('url_slug', '=', $urlslug)
@@ -251,34 +206,24 @@ class News_Url_Controller extends Controller
                 ]);
             }
 
-
             // Jika tidak ada keyword, tampilkan halaman pencarian kosong
-            return view('searchdulu')->with('message', 'Session tidak ditemukan atau kosong.');
-            // return redirect()->route('home')->with('message', 'Session tidak ditemukan atau kosong.');
-
-           
+            return view('searchdulu')->with('message', 'Session tidak ditemukan atau kosong.');           
     }
 
-    // public function showdetil($id)  //dari tampilan IG ke detail
-    // {
-    //     $news = Newsurlmodel::with('comments_join.user', 'user')->findOrFail($id);
-    //     return view('search', ['news' => $news]);
-    // }
-
-     // Menampilkan halaman form pencarian LIKE GOOGLE
+   
      public function show(Request $request)
      {
          
          $keyword = $request->input('keyword');
          $keyword = urldecode($keyword);
-         //dump($keyword);
+        
          $ipAddress = request()->ip();
          $userAgent = request()->header('User-Agent');
-         //dump($ipAddress, $userAgent);
+        
          // Ambil keyword dari session
          if (empty($keyword)) {
              $keyword = session('search_keyword', '');
-             // dump($keyword);
+            
          } 
          // Kosongkan session ID sebelum memulai pencarian
          session()->forget('news_url_id');
@@ -354,7 +299,7 @@ class News_Url_Controller extends Controller
                 $query->orderBy('created_at', 'desc'); // Urutkan komentar
                 }, 'user']) // Muat relasi
                ->get();
-               //dd($news); // Untuk melihat data yang dikembalikan
+              
                if ($news->count() > 0) {
                     session(['news_url_id' => $news[0]->id]); // Simpan ID ke session
                     // Mengembalikan ke halaman dengan hasil pencarian dan input tetap di form
@@ -420,7 +365,7 @@ class News_Url_Controller extends Controller
    
         $newsData = NewsUrlModel::where('url', 'like', '%' . $find . '%')
                 ->orWhere('title', 'like', '%' . $find . '%')
-                // ->orWhere('desc', 'like', '%' . $find . '%')
+                ->active()
                 ->withCount('comments_join') // Menghitung jumlah komentar
                 ->orderBy('created_at', 'desc')
                 ->paginate(15); // Pagination dengan 15 data per halaman  
@@ -464,10 +409,7 @@ class News_Url_Controller extends Controller
         session(['search_keyword' => $find]);
         // $keyword = $request->input('keyword');
         session()->forget('news_url_id');
-        
-        // $urlslug = $request->input('url_slug'); // Ambil input dari pengguna
-        // session(['url_slug' => $urlslug]);
-
+       
         $cleanFind = HtmlSanitizer::sanitize($request->input('find'));
         
         if (is_string($cleanFind) && preg_match('/^[a-zA-Z0-9\s]+$/', $cleanFind)) {
@@ -492,6 +434,7 @@ class News_Url_Controller extends Controller
 
         $indexprod = Product::where('product_name', 'like', '%' . $cleanFind . '%')
                 ->orWhere('product_description', 'like', '%' . $cleanFind . '%')
+                ->active()
                 ->orderBy('created_at', 'desc')
                 ->paginate(15); // Pagination dengan 15 data per halaman  
               
@@ -513,16 +456,7 @@ class News_Url_Controller extends Controller
 
     public function searchurlbaru(Request $request)
     {
-    //     $request->validate([
-    //         'find' => 'required|string|max:255',
-    //     ]);
- 
-        //  $find = $request->input('find');
-        //  $keyword = $request->input('keyword');
-        //  session(['search_keyword' => $find]); // Set session dari inputan user 
-        //  // Kosongkan session ID sebelum memulai pencarian
-        //  session()->forget('news_url_id');
-        //      // Mencari URL yang sesuai dengan input pengguna
+   
         $find = session('search_keyword', '');
 
         $news = Newsurlmodel::where('url', 'like', '%' . $find . '%')
@@ -531,7 +465,7 @@ class News_Url_Controller extends Controller
                  $query->orderBy('created_at', 'desc'); // Urutkan komentar
                  }, 'user']) // Muat relasi
                 ->get();
-                //dd($news); // Untuk melihat data yang dikembalikan
+                
                 if ($news->count() > 0) {
                      session(['news_url_id' => $news[0]->id]); // Simpan ID ke session
                 }
@@ -670,10 +604,7 @@ class News_Url_Controller extends Controller
          $cleanDescription = HtmlSanitizer::sanitize($request->input('description'));
         
  
-        //  // Periksa apakah masih ada tag berbahaya
-        //  if (preg_match('/<script|<iframe|<object|onload=|onerror=/', $cleanTitle) || preg_match('/<script|<iframe|<object|onload=|onerror=/', $cleanTitle)) {
-        //      return redirect()->back()->with('error', 'Judul atau judul mengandung elemen HTML berbahaya!');
-        //  }
+     
         // Gabungkan pengecekan untuk title dan description
         if (preg_match('/<script|<iframe|<object|onload=|onerror=/', $cleanTitle) || 
             preg_match('/<script|<iframe|<object|onload=|onerror=/', $cleanDescription)) {
@@ -693,12 +624,8 @@ class News_Url_Controller extends Controller
         $find = $request->input('find');
         $searchKeyword = $request->input('title');
         session(['search_keyword' => $cleanUrl]);
-        // dump($searchKeyword);
-        // dump(session('search_keyword'));
-        //session(['search_keyword' => $find]); // Simpan nilai find ke session jika diperlukan
-        // Pastikan data tersimpan
+       // Pastikan data tersimpan
         if ($newsUrl) {
-            // return redirect()->route('caridulu')->with('success', 'Data URL baru berhasil disimpan.');
             
              // Redirect ke halaman produk setelah disimpan, dan menampilkan pesan sukses
             return redirect()->route('cari.showdetail',  [
@@ -708,148 +635,8 @@ class News_Url_Controller extends Controller
                 ])->with('success', 'Link baru berhasil disimpan!');
         }
         return back()->with('error', 'Gagal menyimpan link.');    
-
     }
 
-    public function simpannewurlbaruok(Request $request)
-    {   
-        // Validasi input URL dan title
-        $request->validate([
-            'find' => 'required|string|max:500|url|unique:news_url,url', // Cek URL unik di kolom 'url' tabel 'news_url'
-            'title' => 'required|string|max:500', // Memvalidasi input 'title'
-        ], [
-            'find.unique' => 'Alamat URL sudah ada di database.', // Pesan error kustom untuk URL duplikat
-            'find.required' => 'Kolom URL harus diisi.',
-            'title.required' => 'Kolom judul harus diisi.'
-           
-        ]);
-        // Ambil metadata dari URL (misalnya menggunakan method fetchMetadata)
-        //$metadata = $this->fetchMetadata($request->find);
-        //$imageUrl = $metadata['image'] ?? null;
-        
-        // Ambil metadata dari session yang sudah disimpan di view search
-        $metadata = session('metadata');
-        $imageUrl = session('metadata_image') ?? null;
-        // Jika ada URL gambar, unduh dan simpan di folder `public/img/`
-        $localImagePath = null;
-        if ($imageUrl) {
-            $imageContents = Http::get($imageUrl)->body(); // Ambil konten gambar
-            $imageName = 'image/' . Str::random(20) . '.jpg'; // Nama file unik untuk disimpan
-
-            // Simpan gambar di folder public/img
-            Storage::disk('public')->put($imageName, $imageContents);
-            $localImagePath = $imageName; // Simpan path gambar untuk database
-        } else {
-            // Jika tidak ada gambar metadata, perbolehkan pengguna mengunggah gambar
-            $request->validate([
-                'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:100', // Maksimal 100 KB
-            ], [
-                'image.max' => 'Gambar tidak boleh lebih dari 100KB.',
-                'image.image' => 'File yang diunggah harus berupa gambar.',
-                'image.mimes' => 'Gambar harus berformat jpeg, png, jpg, webp, atau gif.'
-            ]);
-
-            if ($request->hasFile('image')) {
-                $uploadedImage = $request->file('image');
-                // Buat nama file gambar
-                $imageName = Str::random(20) . '.' . $uploadedImage->getClientOriginalExtension();
-                // Simpan gambar di folder public/image tanpa menambahkan 'image/' dua kali
-                Storage::disk('public')->putFileAs('image', $uploadedImage, $imageName);
-                // Simpan path yang benar untuk disimpan di database
-                $localImagePath = 'image/' . $imageName;
-            }
-        }
-
-        DB::table('news_url')->insert([
-            'url' => $request->find,
-            'title' => $request->title,
-            'desc' => $request->description ?? $metadata['description'], // Prioritaskan input user
-            'news_user_id' => auth()->id(), //rand(1, 60), // sementara masih tembak langsung
-            // 'image_url' => $metadata['image'] ?? null, // Simpan URL gambar metadata
-            'image_url' => $localImagePath ? asset('storage/' . $localImagePath) : null,
-        ]);
-        
-        // // $find = $request->url;
-        $find = $request->input('find');
-        $searchKeyword = $request->input('title');
-        session(['search_keyword' => $find]); // Simpan nilai find ke session jika diperlukan
-        //session()->forget('metadata'); // Hapus metadata dari session
-        //return redirect()->route('cari'); // ini asli yg jalan
-        return redirect()->route('cari')->with('success', 'Data URL baru berhasil disimpan.');
-
-    }
-
-    public function simpannewurlbaruold(Request $request) //yg asli sudah jalan
-    {   
-        // Validasi input URL dan title
-        $request->validate([
-            'find' => 'required|string|max:500|url|unique:news_url,url', // Cek URL unik di kolom 'url' tabel 'news_url'
-            'title' => 'required|string|max:500', // Memvalidasi input 'title'
-        ], [
-            'find.unique' => 'Alamat URL sudah ada di database.', // Pesan error kustom untuk URL duplikat
-            'find.required' => 'Kolom URL harus diisi.',
-            'title.required' => 'Kolom judul harus diisi.'
-           
-        ]);
-        // Ambil metadata dari URL (misalnya menggunakan method fetchMetadata)
-        $metadata = $this->fetchMetadata($request->find);
-        $imageUrl = $metadata['image'] ?? null;
-        // Jika ada URL gambar, unduh dan simpan di folder `public/img/`
-        $localImagePath = null;
-        if ($imageUrl) {
-            $imageContents = Http::get($imageUrl)->body(); // Ambil konten gambar
-            $imageName = 'image/' . Str::random(20) . '.jpg'; // Nama file unik untuk disimpan
-
-            // Simpan gambar di folder public/img
-            Storage::disk('public')->put($imageName, $imageContents);
-            $localImagePath = $imageName; // Simpan path gambar untuk database
-        } else {
-            // Jika tidak ada gambar metadata, perbolehkan pengguna mengunggah gambar
-            $request->validate([
-                'image' => 'required|image|mimes:jpeg,png,jpg,gif,webp|max:100', // Maksimal 100 KB
-            ], [
-                'image.max' => 'Gambar tidak boleh lebih dari 100KB.',
-                'image.image' => 'File yang diunggah harus berupa gambar.',
-                'image.mimes' => 'Gambar harus berformat jpeg, png, jpg, webp, atau gif.'
-            ]);
-
-            if ($request->hasFile('image')) {
-                // $uploadedImage = $request->file('image');
-                // $imageName = 'image/' . Str::random(20) . '.' . $uploadedImage->getClientOriginalExtension();
-                // Storage::disk('public')->putFileAs('image', $uploadedImage, $imageName);
-                // $localImagePath = $imageName;
-                
-                $uploadedImage = $request->file('image');
-                // Buat nama file gambar
-                $imageName = Str::random(20) . '.' . $uploadedImage->getClientOriginalExtension();
-                // Simpan gambar di folder public/image tanpa menambahkan 'image/' dua kali
-                Storage::disk('public')->putFileAs('image', $uploadedImage, $imageName);
-                // Simpan path yang benar untuk disimpan di database
-                $localImagePath = 'image/' . $imageName;
-            }
-        }
-
-        DB::table('news_url')->insert([
-            'url' => $request->find,
-            'title' => $request->title,
-            'desc' => $request->description ?? $metadata['description'], // Prioritaskan input user
-            'news_user_id' => auth()->id(), //rand(1, 60), // sementara masih tembak langsung
-            // 'image_url' => $metadata['image'] ?? null, // Simpan URL gambar metadata
-            'image_url' => $localImagePath ? asset('storage/' . $localImagePath) : null,
-        ]);
-        
-        // // $find = $request->url;
-        $find = $request->input('find');
-        $searchKeyword = $request->input('title');
-        session(['search_keyword' => $find]); // Simpan nilai find ke session jika diperlukan
-
-        //return redirect()->route('cari'); // ini asli yg jalan
-        return redirect()->route('cari')->with('success', 'Data URL baru berhasil disimpan.');
-
-    }
-
-
-   
 
     public function searchById($id)
     {
@@ -860,8 +647,7 @@ class News_Url_Controller extends Controller
         }, 'user'])
         ->get();
 
-        session(['search_keyword' => $id]); // Set session dari inputan user
-    
+        session(['search_keyword' => $id]); // Set session dari inputan user 
         session(['news_url_id' => $news[0]->id]); 
     
     // session()->forget('news_url_id');
@@ -881,7 +667,7 @@ class News_Url_Controller extends Controller
     public function searchById2($id)
     {
     $news = Newsurlmodel::where('id', $id)->with(['comments_join', 'user'])->get();
-    // dd($news);
+   
     if ($news->isNotEmpty()) {
         // session(['search_keyword' =>$news->first()->title]); // Optional: store title or ID in session if needed
         return view('searchbyid', [
@@ -892,8 +678,6 @@ class News_Url_Controller extends Controller
         return redirect()->route('cari')->with('message', 'Data not found');
     }
     }
-
-    
 
 public function fetchMetadata($url)
 {
@@ -914,8 +698,6 @@ public function fetchMetadata($url)
                     $xpath->query("//title")->item(0)?->nodeValue;
 
             $image = $xpath->query("//meta[@property='og:image']")->item(0)?->getAttribute('content');
-            // $description = $xpath->query("//meta[@property='og:description']")->item(0)?->getAttribute('content') ??
-            //             $xpath->query("//meta[@name='description']")->item(0)?->getAttribute('content');
             $author = $xpath->query("//meta[@name='author']")->item(0)?->getAttribute('content');
             $publishDate = $xpath->query("//meta[@property='article:published_time']")->item(0)?->getAttribute('content') ??
                        $xpath->query("//meta[@name='publish_date']")->item(0)?->getAttribute('content');
@@ -969,7 +751,6 @@ public function showMetadata(Request $request)
 }
 
 
-
 public function showForm()
 {
     // Show the form to input URL
@@ -1017,23 +798,17 @@ public function saveCommentReply(Request $request, $commentId)
     if ($request->hasFile('reply_image')) {
         // Simpan file gambar di folder storage dan dapatkan pathnya
         $storedPath = $request->file('reply_image')->store('reply_images', 'public');
-        // dd($storedPath);
+       
     }
 
     DB::table('comment_replies')->insert([
         'comment_id' => $commentId,
         'user_id' => auth()->id(), //rand(1, 50), // Assuming user is authenticated
         'reply_text' => $request->input('reply_text'),
-        // 'created_at' => now(),  // Manual timestamp
-        // 'updated_at' => now(),  // Manual timestamp
-        // 'image_reply' => $imagePath, // Menyimpan path gambar jika ada
-        // 'image_reply' => $storedPath, // Menyimpan path gambar jika ada
         'image_reply' => $storedPath ? asset('storage/' . $storedPath) : null,
-        //'image_reply' => localImagePath, // Menyimpan path gambar jika ada
-        //dd()
       
     ]);
-    // Redirect back to the same page with a success message
+   
     return back()->with('success', 'Reply posted successfully!');
 }
 
@@ -1055,10 +830,7 @@ public function saveCommentReply(Request $request, $commentId)
             'title.required' => 'Kolom judul harus diisi.'
            
         ]);
-        // Ambil metadata dari URL (misalnya menggunakan method fetchMetadata)
-        //$metadata = $this->fetchMetadata($request->find);
-        //$imageUrl = $metadata['image'] ?? null;
-        
+       
         // Ambil metadata dari session yang sudah disimpan di view search
         $metadata = session('metadata');
         $imageUrl = session('metadata_image') ?? null;
@@ -1105,8 +877,6 @@ public function saveCommentReply(Request $request, $commentId)
         $find = $request->input('find');
         $searchKeyword = $request->input('title');
         session(['search_keyword' => $find]); // Simpan nilai find ke session jika diperlukan
-        //session()->forget('metadata'); // Hapus metadata dari session
-        //return redirect()->route('cari'); // ini asli yg jalan
         return redirect()->route('cari')->with('success', 'Data URL baru berhasil disimpan.');
 
     }
@@ -1146,7 +916,6 @@ public function saveCommentReply(Request $request, $commentId)
         $product = new Product();
         $product->product_user_id = auth()->id(); //rand(1, 50);
         $product->product_name = $cleanTitle;
-        // $product->product_description = $request->input('product_description');
         $product->product_description = $cleanDescription;
         $product->product_price = $request->input('product_price');
         $product->product_contact_number = $request->input('product_contact_number');
@@ -1154,7 +923,7 @@ public function saveCommentReply(Request $request, $commentId)
         $product->save();
             if ($request->hasFile('product_images')) {
                 $files = $request->file('product_images');
-                //dd($files);
+              
                 foreach ($files as $key => $file) {
                     if ($key < 5) {
                         $path = $file->store('imagesproduct', 'public');
@@ -1164,23 +933,7 @@ public function saveCommentReply(Request $request, $commentId)
                 $product->save(); // Slug akan otomatis di-generate
             }
 
-            // //baru simpan QR code saat tambah dan simpan produk baru
-            // // Generate URL untuk produk
-            // $productUrl = route('product.show', ['id' => $product->id, 'product_slug' => Str::slug($product->product_slug)]);
-            // dump($productUrl);
-            // // Generate QR code
-            // $qrCodePath = "qrcodes/qr_{$product->id}.png";
-            // QrCode::format('png')
-            //     ->size(200)
-            //     ->generate($productUrl, storage_path("app/public/{$qrCodePath}"));
-
-            // // Simpan URL dan QR code path ke produk
-            // $product->update([
-            //     'url' => $productUrl,
-            //     'product_image_qr' => asset("storage/{$qrCodePath}"),
-            // ]);
-            // // sampai disini codenya generate QR code dan simpan gambar QR
-
+           
         // Redirect ke halaman produk setelah disimpan, dan menampilkan pesan sukses
         return redirect()->route('product.show',  [
             'id' => $product->id, 
@@ -1223,17 +976,14 @@ public function saveCommentReply(Request $request, $commentId)
     {
        $url_slug = $urlslug;
         $keyword = session('search_keyword');
-        // $keyword = $title;
         $keyid = $id;
-        //dd($id, $title, $urlslug);
         session(['news_url_id' => $id]); // Simpan ID ke session
         session(['search_keyword' => $title]); //simpan title ke session
         session(['url_slug' => $url_slug]); //simpan title ke session
-        // dump($id, $title, $urlslug);
-        // if (!empty($keyword)) {
+       
         if (!empty($url_slug)) {    
                 // Jika keyword ada, jalankan pencarian
-                // $news = Newsurlmodel::where('id', $keyid)
+               
                 $news = Newsurlmodel::where('url_slug', $url_slug)
                 ->with([
                     'comments_join' => function ($query) {
@@ -1243,38 +993,12 @@ public function saveCommentReply(Request $request, $commentId)
                 ])
                 ->firstOrFail();
             
-                // Ambil data utama
-                // $news = Newsurlmodel::where('url_slug', $url_slug)
-                // ->with('user') // Hanya ambil relasi 'user'
-                // ->firstOrFail();
-
-                // // Paginate comments_join
-                // $comments = $news->comments_join()
-                // ->with('commentReplies') // Tambahkan relasi replies
-                // ->orderBy('created_at', 'desc')
-                // ->paginate(30);
-                // $news = Newsurlmodel::where('url_slug', $url_slug)
-                //     ->with(['user'])
-                //     ->firstOrFail();
-
-                // $comments = Comment::where('news_id', $news->id)
-                //     ->with('commentReplies')
-                //     ->orderBy('created_at', 'desc')
-                //     ->paginate(30);
-
-                
-
                 // Tambahkan view count
                     $news->increment('views_count'); // viewed_count: kolom di database untuk jumlah dilihat
                   
                 return view('showdetail', [
                     'newsurljoin' => $news,
                     'find' => $keyword,]);
-                // return view('showdetail', [
-                //     'newsurljoin' => $news,
-                //     'find' => $keyword,   
-                //     'comments' => $comments, ]);
-            
         }
     else {
         $news = Newsurlmodel::where('id', $id)
@@ -1285,79 +1009,14 @@ public function saveCommentReply(Request $request, $commentId)
                     'user'
                 ]) -> get();
 
-            //  // Ambil data utama
-            //  $news = Newsurlmodel::where('id', $id)
-            //  ->with('user') // Hanya ambil relasi 'user'
-            //  ->firstOrFail();
-
-            //  // Paginate comments_join
-            //  $comments = $news->comments_join()
-            //  ->with('commentReplies') // Tambahkan relasi replies
-            //  ->orderBy('created_at', 'desc')
-            //  ->paginate(30);
-
                 return view('showdetail', [
                     'newsurljoin' => $news,
                     'find' => $keyword,   
-                
-                // return view('showdetail', [
-                //     'newsurljoin' => $news,
-                //     'find' => $keyword,   
-                //     'comments' => $comments, 
             ]);
     }
     }
 
-    public function showdetaillazy($id, $title, $urlslug)
-    {
-       $url_slug = $urlslug;
-        $keyword = session('search_keyword');
-        // $keyword = $title;
-        $keyid = $id;
-        session(['news_url_id' => $id]); // Simpan ID ke session
-        session(['search_keyword' => $title]); //simpan title ke session
-        session(['url_slug' => $url_slug]); //simpan title ke session
-      
-        if (!empty($url_slug)) {    
-                $news = Newsurlmodel::where('url_slug', $urlslug)
-                ->with('user') // Load only the user relationship initially
-                ->firstOrFail();
-                
-                $news->increment('views_count'); // Increment views count
-                
-                return view('showdetail2', [
-                    'newsurljoin' => $news,
-                    'find' => $keyword,]);
-        }
-    // else {
-    //     $news = Newsurlmodel::where('id', $id)
-    //             ->with([
-    //                 'comments_join' => function ($query) {
-    //                     $query->orderBy('created_at', 'desc')->with('commentReplies');
-    //                 },
-    //                 'user'
-    //             ]) -> get();
-    //             return view('showdetail', [
-    //                 'newsurljoin' => $news,
-                
-    //         ]);
-    //    }
-    }
-
-    // public function fetchComments(Request $request, $id)
-    // {
-    //     $comments = comments_join::where('news_id', $id)
-    //         ->with('commentReplies', 'user') // Include necessary relationships
-    //         ->orderBy('created_at', 'desc')
-    //         ->paginate(5); // Adjust per-page limit as needed
-    //         dd($comments);
-
-    //     if ($request->ajax()) {
-    //         return view('partials.comments', compact('comments'))->render();  
-    //     }
-
-    //     return response()->json(['message' => 'Invalid request'], 400);
-    // }
+   
 
     public function fetchComments(Request $request, $id)
     {
@@ -1381,10 +1040,7 @@ public function saveCommentReply(Request $request, $commentId)
     
     public function showproduct(Request $request, $id, $product_slug)
     { 
-        // if ($request->query('source') === 'qr' && !Auth::check()) {
-        //     return redirect()->route('login')->with('message', 'Please login to access this page.');
-        // }
-    
+       
         $product = Product::where('id', $id)
                     ->where('product_slug', $product_slug)
                     ->firstOrFail();
@@ -1408,8 +1064,7 @@ public function saveCommentReply(Request $request, $commentId)
             ]);
         }    
         //return view('showproduct', compact('product')); 
-        return view('showproduct', compact('product', 'qrUrl', 'isFromQRCode')); 
-                  
+        return view('showproduct', compact('product', 'qrUrl', 'isFromQRCode'));              
 
     }
 
@@ -1429,7 +1084,7 @@ public function saveCommentReply(Request $request, $commentId)
             if (empty($product->url)) {
                 return response()->json(['success' => false, 'message' => 'URL tidak tersedia untuk produk ini.']);
             }
-            dump($product);
+           
             // Buat QR code
             $qrCodePath = 'image-qr-codes/' . $product->id . '-qr.png';
             $qrCodeFullPath = storage_path('app/storage/app/public/' . $qrCodePath);
@@ -1461,18 +1116,6 @@ public function saveCommentReply(Request $request, $commentId)
             $product->url = $request->input('url');
             $product->save();
 
-            // // Ensure the directory exists
-            // $qrCodeDir = storage_path('app/public/image-qr-codes/');
-            // if (!is_dir($qrCodeDir)) {
-            //     mkdir($qrCodeDir, 0755, true);
-            // }
-            // // Buat QR code
-            // $qrCodePath = 'image-qr-codes/' . $product->id . '-qr.png';
-            // $qrCodeFullPath = $qrCodeDir . $product->id . '-qr.png';
-            // QrCode::format('png')->size(300)->generate($product->url, $qrCodeFullPath);
-            // // Save the QR Code path in the database
-            // $product->update(['product_image_qr' => 'storage/' . $qrCodePath]);
-
             // Kembalikan respon JSON sukses
             return response()->json(['message' => 'URL produk berhasil disimpan.']);
         } catch (\Exception $e) {
@@ -1481,8 +1124,7 @@ public function saveCommentReply(Request $request, $commentId)
         }
     }
 
-
-        public function addLike($id)
+    public function addLike($id)
     {
         $news = Newsurlmodel::findOrFail($id);
         $news->increment('likes_count');
@@ -1521,7 +1163,7 @@ public function saveCommentReply(Request $request, $commentId)
 
     public function register(Request $request)
     {
-        // dd($request);
+       
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
@@ -1531,7 +1173,6 @@ public function saveCommentReply(Request $request, $commentId)
         ]);
         
         $ipAddress = $request->ip();
-        //$ipAddress = '182.233.46.233'; //tembak langsung
         $userAgent = $request->header('User-Agent');
         // Mendapatkan lokasi berdasarkan IP menggunakan layanan pihak ketiga (misalnya ipinfo.io)
         $location = $this->getLocationFromIp($ipAddress);
@@ -1542,7 +1183,7 @@ public function saveCommentReply(Request $request, $commentId)
             Storage::disk('public')->putFileAs('imageavatar', $uploadedImage, $imageName);
             $localImagePath = 'imageavatar/' . $imageName;
         }
-        // dd($localImagePath);
+      
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -1570,7 +1211,7 @@ public function saveCommentReply(Request $request, $commentId)
         try {
             // Menggunakan ipinfo.io untuk mendapatkan lokasi berdasarkan IP
             $response = Http::get("http://ipinfo.io/{$ipAddress}/json");
-            //dump($response);
+           
             if ($response->successful()) {
                 $data = $response->json();
                 return "{$data['city']}, {$data['region']}, {$data['country']}";
@@ -1627,56 +1268,6 @@ public function saveCommentReply(Request $request, $commentId)
 
     }
 
-
-    // public function login2(Request $request)
-    // {
-    //     $request->validate([
-    //         'email' => 'required|email',
-    //         'password' => 'required|string',
-    //     ]);
-
-    //     if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-    //         $token = Auth::user()->remember_token;
-    //         setcookie('user_token', $token, time() + (86400 * 30), "/"); // Cookie 30 hari
-
-    //         return response()->json([
-    //             'message' => 'User logged in successfully',
-    //             'token' => $token,
-    //         ])->withHeaders([
-    //             'Authorization' => $token
-    //         ]);
-           
-    //     }
-
-    //     return response()->json([
-    //         'message' => 'Invalid credentials'
-    //     ], 401);
-    // }
-
-    // public function beranda(Request $request)
-    // {
-       
-    //     // Memeriksa apakah token 'user_token' ada di cookie
-    //     $token = $request->cookie('user_token');
-        
-    //     dump($token);
-    //     if ($token && Auth::check() && Auth::user()->remember_token === $token) {
-    //         // Jika token ada di cookie dan sesuai dengan token pengguna yang terautentikasi, lanjutkan ke halaman beranda2
-    //         return view('beranda2');
-    //     } else {
-    //         // Jika token tidak ada atau tidak valid, arahkan pengguna ke halaman login dengan pesan
-    //         return redirect('login')->with('alert', 'Kamu harus login dulu');
-    //     }
-        
-    // }
-
-    // public function beranda2()
-    // {
-        
-    //         //return view('user');
-    //         return view('beranda');
-    // }
-
      // Fungsi logout
      public function logout(Request $request)
      {
@@ -1686,8 +1277,6 @@ public function saveCommentReply(Request $request, $commentId)
          // Logout pengguna dari aplikasi
          Auth::logout();
  
-         // Arahkan ke halaman login dengan pesan sukses
-         //return redirect()->route('home')->with('message', 'Logged out successfully');
          return back()->with('success', 'logout successfully!');
      }
     
@@ -1723,12 +1312,9 @@ public function saveCommentReply(Request $request, $commentId)
 
             // Decode JSON content
             $content = json_decode(File::get($contentPath), true);
-            //dd($content, $content['about_us']);
+          
             session(['search_keyword' => NULL]);
-            //   // Simpan URL halaman sebelumnya ke dalam session jika belum disimpan
-            //      if (!$request->session()->has('url.intended')) {
-            //         $request->session()->put('url.intended', url()->previous());
-            //     }
+            
             // Pass variables to the view
             return view('landingpage', [
                 'aboutText' => $content['about_us'] ?? 'About content missing',
@@ -1754,19 +1340,17 @@ public function saveCommentReply(Request $request, $commentId)
     public function updateuser(Request $request)
     {
         $user = Auth::user();
-        //dd($request->all(), $request->file('avatar'));
-
+      
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
             'password' => 'nullable|string|min:8|confirmed',
             'avatar' => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:100', // Max 100KB
         ]);
-        //dd($request->hasFile('avatar'));
         // Update avatar
         if ($request->hasFile('avatar')) {
             if ($user->user_avatar) {
-                //dd($user);
+              
                 // Delete old avatar
                 Storage::disk('public')->delete($user->user_avatar);
             }
@@ -1776,8 +1360,6 @@ public function saveCommentReply(Request $request, $commentId)
 }
             //$user->user_avatar = $avatarPath;
             $avatarChanged = true; // Tandai bahwa avatar diubah
-            //dd($avatarPath);
-        
 
         // Update other fields
         $user->name = $request->name;
@@ -1797,9 +1379,7 @@ public function saveCommentReply(Request $request, $commentId)
 
     public function downloadPDF()
     {
-        // if (!file_exists($filePath)) {
-        //     abort(404, 'File not found.');
-        // }
+        
         $filePath = storage_path('app/public/caratambahprodukbaru.pdf'); // Path ke file PDF
         $fileName = 'caratambahprodukbaru.pdf'; // Nama file untuk diunduh
 
@@ -1809,9 +1389,7 @@ public function saveCommentReply(Request $request, $commentId)
     }
     public function previewPDF()
     {
-        // if (!file_exists($filePath)) {
-        //     abort(404, 'File not found.');
-        // }
+       
         $filePath = storage_path('app/public/caratambahprodukbaru.pdf'); // Path ke file PDF
 
         return response()->file($filePath, [
@@ -1830,13 +1408,6 @@ public function saveCommentReply(Request $request, $commentId)
         $cleanDescription = HtmlSanitizer::sanitize($request->input('description'));
         $cleanCategory = HtmlSanitizer::sanitize($request->input('category'));
 
-        // Feedback::create([
-        //     'title' => $request->input('title'),
-        //     'description' => $request->input('description'),
-        //     'category' => $request->input('category'),
-        //     'user_id' => Auth::id(), // Optional: Associate feedback with logged-in user
-        // ]);
-
         Feedback::create([
             'title' => $cleanTitle,
             'description' => $cleanDescription,
@@ -1853,12 +1424,9 @@ public function saveCommentReply(Request $request, $commentId)
         $request->validate([
             'type' => 'required|in:up,down',
         ]);
-        // dump($request, $id);
+       
         $feedback = Feedback::findOrFail($id);
-        // if (!$feedback) {
-        //     return response()->json(['message' => 'Feedback not found'], 404);
-        // }
-
+       
         // Prevent duplicate votes
         $existingVote = Vote::where('feedback_id', $id)
             ->where('user_id', Auth::id())
@@ -1928,8 +1496,7 @@ public function saveCommentReply(Request $request, $commentId)
             $query->where('title', 'LIKE', "%$searchKeyword%"); // Cari berdasarkan judul
         })
         ->paginate(10);  
-        // ->get();
-        // dd($news->toArray());
+        
         return view('dashboard.newscomment', compact('news'));
     }
 
@@ -1971,7 +1538,7 @@ public function saveCommentReply(Request $request, $commentId)
             ->leftJoin('users', 'products.product_user_id', '=', 'users.id')
             ->orderBy($sortBy, $direction)
             ->paginate(20);
-            // dd($products);
+          
 
         return view('dashboard.productsdashboard', compact('products'));
     }
@@ -2002,19 +1569,6 @@ public function saveCommentReply(Request $request, $commentId)
     {
         $search = $request->input('search');
 
-        // Query dasar dengan filter pencarian
-        // $products = Product::with('user') // Relasi ke User
-        //     ->when($search, function ($query, $search) {
-        //         $query->where('product_name', 'like', "%{$search}%")
-        //             ->orWhere('product_description', 'like', "%{$search}%")
-        //             ->orWhereHas('user', function ($query) use ($search) {
-        //                 $query->where('name', 'like', "%{$search}%");
-        //             });
-        //     })
-        //     ->orderBy('created_at', 'desc') // Default sort
-        //     ->paginate(20); // Pagination
-            // dd($products);
-
             $products = DB::table('products')
             ->select('products.*', 'users.name as username') // Memilih semua kolom dari produk + username
             ->leftJoin('users', 'products.product_user_id', '=', 'users.id') // Gabungkan tabel produk dengan tabel users
@@ -2025,7 +1579,7 @@ public function saveCommentReply(Request $request, $commentId)
             })
             ->orderBy('products.created_at', 'desc') // Urutkan berdasarkan tanggal pembuatan
             ->paginate(20); // Batasi hasil dengan paginasi
-            // dd($products);
+           
         return view('dashboard.productsdashboard', compact('products', 'search'));
     }
 
@@ -2051,8 +1605,6 @@ public function saveCommentReply(Request $request, $commentId)
             $chartData['data'] = [0];
         }
        
-
-        // dd($chartData);
         return view('dashboard.news_chart', compact('chartData'));
     }
 
@@ -2077,7 +1629,7 @@ public function saveCommentReply(Request $request, $commentId)
             $chartDataComment['labels'] = ['No Data'];
             $chartDataComment['data'] = [0];
         }
-        // dd($chartData);
+        
         return view('dashboard.comment_chart', compact('chartDataComment'));
     }
 
@@ -2172,7 +1724,7 @@ public function saveCommentReply(Request $request, $commentId)
         'search_logs_count' => $newsDataSearch->sum('count'),
         'totalSearchTypeCount' => $totalSearchTypeCount,
     ];
-        // dd($chartData);
+       
         return view('dashboard.fourchart', compact('chartData','counts'));
     }
 
@@ -2207,8 +1759,6 @@ public function saveCommentReply(Request $request, $commentId)
         return response()->json(['yearlyData' => $yearlyData]);
     }
 
-    
-    
     // Proses otorisasi untuk admin
     public function authenticate(Request $request)
     {
@@ -2220,7 +1770,6 @@ public function saveCommentReply(Request $request, $commentId)
 
         // Ambil user berdasarkan email
         $user = User::where('email', $request->email)->first();
-        // $role = $user->role;
         // Cek apakah user ada, role-nya admin (role = 1), dan password benar
         if ($user && $user->role == 1 && Hash::check($request->password, $user->password)) {
             Auth::login($user); // Login user

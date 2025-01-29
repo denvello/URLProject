@@ -303,16 +303,7 @@
                         <span>
                             {{ $feedback->user->name ?? 'Anonymous' }} • {{ $feedback->created_at->diffForHumans() }}
                         </span>
-                        <!-- <div class="vote-buttons">
-                            <button class="upvote" 
-                                onclick="{{ Auth::check() ? 'voteFeedback(' . $feedback->id . ', \'up\')' : 'redirectToLogin()' }}">
-                                <i class="fas fa-thumbs-up"></i> {{ $feedback->upvotes }}
-                            </button>
-                            <button class="downvote" 
-                                onclick="{{ Auth::check() ? 'voteFeedback(' . $feedback->id . ', \'down\')' : 'redirectToLogin()' }}">
-                                <i class="fas fa-thumbs-down"></i> {{ $feedback->downvotes }}
-                            </button>
-                        </div> -->
+                       
                         <div>
                             👍 {{ $feedback->upvotes }} | 👎 {{ $feedback->downvotes }}
                         </div>

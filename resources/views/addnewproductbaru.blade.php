@@ -117,7 +117,6 @@
 
 <div class="container">
     <!-- Menampilkan logo -->
-    <!-- <img src="{{ asset('img/cekduluah2.svg') }}" alt="Logo" class="logo" style="width: 25%;" > Ubah path sesuai lokasi logo Anda -->
     <div style="display: flex; justify-content: center; align-items: center; margin-top: 10px;">
     <img src="{{ asset('img/cekduluajalogo.png') }}" alt="Logo" class="logo" style="width: 25%;">
 </div>

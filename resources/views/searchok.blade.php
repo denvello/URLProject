@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CEK DULU AH![cekduluah.com]</title>
+    <title>CEK DULU AH![cekduluaja.com]</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -203,7 +203,7 @@
 </head>
 <body>
     <!-- Menampilkan logo -->
-    <img src="{{ asset('img/cekduluah2.svg') }}" alt="Logo" class="logo"> <!-- Ubah path sesuai lokasi logo Anda -->
+    <img src="{{ asset('img/cekduluaja.svg') }}" alt="Logo" class="logo"> <!-- Ubah path sesuai lokasi logo Anda -->
     <!-- Form untuk pencarian -->
     <form action="{{ route('cari.search') }}" method="POST">
         @csrf

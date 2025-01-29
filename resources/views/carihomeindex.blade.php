@@ -5,7 +5,7 @@
 </head>
 <body>
      <!-- Menampilkan logo -->
-     <img src="{{ asset('img/cekduluah.png') }}" alt="Logo" class="logo"> <!-- Ubah path sesuai lokasi logo Anda -->
+     <img src="{{ asset('img/cekduluaja.png') }}" alt="Logo" class="logo"> <!-- Ubah path sesuai lokasi logo Anda -->
     <style type="text/css">
 		.pagination li{
 			float: left;

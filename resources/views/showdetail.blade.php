@@ -1013,16 +1013,6 @@
             });
         </script>
 
-        <!-- Debug Session (hanya untuk keperluan testing) -->
-        <!-- @if(session('search_keyword'))
-            <p>Session Keyword: {{ session('search_keyword') }}</p>
-            <p>Session ID: {{ session('news_url_id') }}</p>
-            <p>Session Slug: {{ session('url_slug') }}</p>
-        @elseif (session('url_slugd'))
-            <p>Slug URL : {{ session('url_slug') }}</p>
-        @else
-            <p>Session Keyword tidak ditemukan di view search. : {{ session('keyword') }}</p>
-        @endif -->
 </div>                     
 </body>
 </html>
