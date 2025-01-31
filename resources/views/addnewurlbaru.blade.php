@@ -130,15 +130,9 @@
                 <p id="find-display">{{ old('find', session('search_keyword', '')) }}</p>
                 <input type="hidden" name="find" id="find" value="{{ old('find', session('search_keyword', '')) }}">
             </div>
-            <!-- <p>{{ old('find', session('search_keyword', '')) }}</p> -->
+
             <!-- Input hidden untuk menyimpan nilai -->
             <input type="hidden" name="find" id="find" value="{{ old('find', session('search_keyword', '')) }}">
-
-			<!-- Input Judul
-			<label for="title">Tambah Judul URL</label>
-            <textarea name="title" id="title" rows="3" required maxlength="500" 
-            pattern="^[^<>]*$/?" 
-            title="Karakter HTML tidak diperbolehkan">{{ session('metadata_title', '') }}</textarea> -->
             <label for="title">Tambah Judul Data</label>
 
             <textarea 

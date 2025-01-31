@@ -38,12 +38,7 @@ class Commentsmodel extends Model
 
     }
     
-    // //tambahan untuk news comment dan reply di dashboard
-    // public function replies()
-    // {
-    //     return $this->hasMany(Commentsmodel::class, 'comment_id', 'id'); // Replies refer back to parent comments
-    // }
-
+   
     
 
 

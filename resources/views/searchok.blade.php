@@ -275,21 +275,6 @@
             <h4>Daftar Komentar :</h4>
             <a href="/tambahkomen">   Tambah komen</a>
             <br>
-        <!-- Tombol untuk menampilkan/menyembunyikan semua balasan
-        <button id="toggleAllReplies">Show All Replies</button>
-
-        <script>
-            document.getElementById('toggleAllReplies').addEventListener('click', function() {
-                const replies = document.querySelectorAll('.replies');
-                const isHidden = Array.from(replies).some(reply => reply.style.display === 'none');
-
-                replies.forEach(reply => {
-                    reply.style.display = isHidden ? 'block' : 'none'; // Tampilkan atau sembunyikan
-                });
-
-                this.textContent = isHidden ? 'Hide All Replies' : 'Show All Replies'; // Ganti teks tombol
-            });
-        </script>     -->
 
         @foreach($newsurljoin as $news)
             @if($news->comments_join->isEmpty())
@@ -420,29 +405,6 @@
         }
     </script>
 
-<!-- <script>
-        function toggleReplies(commentId) {
-            var repliesContainer = document.getElementById('replies-' + commentId);
-            var toggleButton = document.getElementById('toggle-replies-' + commentId);
-
-            if (repliesContainer.style.display === 'none' || repliesContainer.style.display === '') {
-                repliesContainer.style.display = 'block'; // Tampilkan replies
-                toggleButton.textContent = 'Hide Replies'; // Ubah teks tombol
-            } else {
-                repliesContainer.style.display = 'none'; // Sembunyikan replies
-                toggleButton.textContent = 'Show Replies'; // Ubah teks tombol
-            }
-        }
-    </script> -->
-
-    <!-- Debug Session (hanya untuk keperluan testing) -->
-    @if(session('search_keyword'))
-        <p>Session Keyword: {{ session('search_keyword') }}</p>
-        <p>Session ID: {{ session('news_url_id') }}</p>
-    @else
-        <p>Session Keyword tidak ditemukan di view search. : {{ session('keyword') }}</p>
-
-    @endif
                      
 </body>
 </html>

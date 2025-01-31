@@ -197,16 +197,6 @@
         </div>
     @endif
 
-    <!-- Debugging Session -->
-    <!-- <p>Session Keyword: {{ session('search_keyword') }}</p>
-    <p>Session ID: {{ session('news_url_id') }}</p>
-
-    @if(session('search_keyword'))
-        <p>Session Keyword di IF: {{ session('search_keyword') }}</p>
-        <p>Session ID di IF: {{ session('news_url_id') }}</p>
-    @else
-        <p>Session Keyword tidak ditemukan di view search.</p>
-    @endif -->
 </div>
 
 <script>

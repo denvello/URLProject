@@ -37,12 +37,5 @@
 		</div>
 		@endif
 
-	 <!-- Debug Session (hanya untuk keperluan testing) -->
-	 <!-- @if(session('search_keyword'))
-        <p>Session Keyword: {{ session('search_keyword') }}</p>
-        <p>Session ID: {{ session('news_url_id') }}</p>
-    @else
-        <p>Session Keyword tidak ditemukan di view search.</p>
-    @endif -->
 </body>
 </html>

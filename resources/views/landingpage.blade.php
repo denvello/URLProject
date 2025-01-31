@@ -270,8 +270,6 @@
         <a href="{{ route('home') }}" class="custom-button"> Masuk & lanjutkan </a>
     </div>
 
-    <!-- Add more sections as needed -->
-
     <script>
         // Use Intersection Observer for animations
         const sections = document.querySelectorAll('.section');

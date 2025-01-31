@@ -8,9 +8,6 @@
 <body>
 <br>
 	<h3>TAMBAH DATA URL BARU</h3>
-	<!-- <a href="/home/cari"> Cari URL</a>	
-	<br/>
-	<br/> -->
 	<a href="javascript:history.back()">Kembali</a>	
 	<br/>
 	<br/>

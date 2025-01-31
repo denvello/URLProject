@@ -694,8 +694,6 @@
             <p>
              <!-- Tombol navigasi -->
             <div style="margin-top: 20px;">
-                <!-- <a href="/caridulu/showindexurl" class="btn-link">Index URL Terbaru</a> -->
-                <!-- <a href="/addnewproduct" class="btn-link">Tambah Produk</a> -->
                 <a href="/showindexprod" class="btn-link">Daftar Promo</a>
                 
             </div>
@@ -747,8 +745,6 @@
                                     <small>
                                         <!-- <strong>Dibuat:</strong>  -->
                                         {{ \Carbon\Carbon::parse($arr_homeindexurl->created_at)->diffForHumans() }}
-                                        <!-- <span>Likes: {{ $arr_homeindexurl->likes_count }}</span>
-                                        <span>Views: {{ $arr_homeindexurl->views_count }}</span> -->
                                     <span>
                                         <img src="{{ asset('img/viewed.png') }}" alt="Views" style="width: 16px; height: 16px; margin-right: 5px;">
                                             {{ $arr_homeindexurl->views_count }}
@@ -771,15 +767,7 @@
                         {{ $newsData->links() }}
                     </div>
                 </div> 
-                <!-- Debug Session (hanya untuk keperluan testing) -->
-                <!-- @if(session('search_keyword'))
-                    <p>Session Keyword: {{ session('search_keyword') }}</p>
-                    <p>Session ID: {{ session('news_url_id') }}</p>
-                    <p>Session URL SLUG: {{ session('url_slug') }}</p>
-                @else
-                    <p>Session Keyword tidak ditemukan di view search. : {{ session('keyword') }}</p>
-
-                @endif -->
+               
             @endif    
     </div>    
    

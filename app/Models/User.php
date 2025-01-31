@@ -53,13 +53,7 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-    //ga perlu dipakai, karena sudah didefinisikan di model news_url dan comments
-    // protected $table = "users";
-
-    // public function news_urls()
-    // {
-    //     return $this->hasMany(Newsurlmodel::class, 'user_id', 'id');
-    // }
+   
     public function products()
     {
         return $this->hasMany(Product::class, 'product_user_id');

@@ -609,40 +609,6 @@
             
             @endif
     
-        <!-- <script>
-            function showMoreText(commentId) {
-                var commentText = document.getElementById('comment-' + commentId);
-                if (commentText.classList.contains('expanded')) {
-                    commentText.classList.remove('expanded');
-                    event.target.textContent = 'terus membaca >>';
-                } else {
-                    commentText.classList.add('expanded');
-                    event.target.textContent = 'Sembunyikan';
-                }
-            }
-
-            function toggleReplies(commentId) {
-                var repliesContainer = document.getElementById('replies-' + commentId);
-                var toggleButton = document.getElementById('toggle-replies-' + commentId);
-
-                if (repliesContainer.style.display === 'none' || repliesContainer.style.display === '') {
-                    repliesContainer.style.display = 'block'; // Tampilkan replies
-                    toggleButton.textContent = 'Hide Replies'; // Ubah teks tombol
-                } else {
-                    repliesContainer.style.display = 'none'; // Sembunyikan replies
-                    toggleButton.textContent = 'Show Replies'; // Ubah teks tombol
-                }
-            }
-        </script> -->
-
-        <!-- Debug Session (hanya untuk keperluan testing) -->
-        <!-- @if(session('search_keyword'))
-            <p>Session Keyword: {{ session('search_keyword') }}</p>
-            <p>Session ID: {{ session('news_url_id') }}</p>
-        @else
-            <p>Session Keyword tidak ditemukan di view search. : {{ session('keyword') }}</p>
-
-        @endif -->
 </div>                     
 </body>
 </html>

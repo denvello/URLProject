@@ -590,9 +590,7 @@
         // Mengatur ukuran halaman
         const pageWidth = doc.internal.pageSize.getWidth(); // Lebar halaman
         const pageHeight = doc.internal.pageSize.getHeight(); // Tinggi halaman
-        // const qrCanvas = qrCodeContainer.querySelector('canvas');
-        // const qrImage = qrCanvas.toDataURL('image/png');
-
+    
         // Judul Produk
         doc.setFont("helvetica", "bold"); // Huruf tebal
         doc.setFontSize(18);

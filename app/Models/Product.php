@@ -45,12 +45,6 @@ class Product extends Model
     {
         return $this->belongsTo(User::class, 'product_user_id','id');
     }
-
-    // public function userbelong()
-    // {
-    //     return $this->belongsTo(User::class, 'user_id', 'id');
-    // }
-
     
     public function getImages()
     {

@@ -187,11 +187,6 @@
         },
     });
 
-    // // Sinkronisasi isi editor dengan input hidden saat form disubmit
-    // document.querySelector('form').addEventListener('submit', function () {
-    //     const productDescriptionInput = document.getElementById('product_description');
-    //     productDescriptionInput.value = quill.root.innerHTML; // Simpan HTML editor ke input hidden
-    // });
 
     // Sinkronisasi isi editor dengan input hidden saat form disubmit
     document.querySelector('form').addEventListener('submit', function (event) {
@@ -203,12 +198,6 @@
     // Validasi untuk tag HTML berbahaya
     const unsafeTags = ['<script', '<iframe', '<object', '<embed', 'onload=', 'onerror='];
     let isUnsafe = false;
-
-    // unsafeTags.forEach(tag => {
-    //     if (descriptionHtml.toLowerCase().includes(tag)) {
-    //         isUnsafe = true;
-    //     }
-    // });
 
     unsafeTags.forEach(tag => {
         if (descriptionHtml.toLowerCase().includes(tag) || productNameInput.value.toLowerCase().includes(tag) || productPhoneInput.value.toLowerCase().includes(tag)) {

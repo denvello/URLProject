@@ -91,9 +91,7 @@ Route::get('/feedback/create', [News_Url_Controller::class, 'createfeedback'])->
 //DASHBOARD
 Route::get('/admin-login', [News_Url_Controller::class, 'showLoginFormAdmin'])->name('admin.login');
 Route::post('/admin-login', [News_Url_Controller::class, 'authenticate'])->name('admin.authenticate');
-//oute::get('/mydashboard', [News_Url_Controller::class, 'authenticate'])->middleware('auth')->name('mydashboard');
-//Route::get('/mydashboard', [News_Url_Controller::class, 'mydashboard'])->middleware('auth')->name('mydashboard');
-// Route::get('/dashboard/users', [UserController::class, 'usersindex'])->name('users.index');
+
 Route::get('/dashboard/users', [UserController::class, 'listUsers'])->name('dashboard.users');
 Route::get('/dashboard/newscomments', [News_Url_Controller::class, 'showNewsWithComments'])->name('dashboard.news.comments');
 Route::get('/dashboard/users/profile', [UserController::class, 'userProfile'])->name('dashboard.userprofile');

@@ -871,69 +871,6 @@
             
             @endif
         
-        <!-- @push('scripts')                        
-        <script>
-            let page = 2; // Start with the first page
-            let isLoading = false;
-            // Lazy loading on scroll
-            window.addEventListener('scroll', () => {
-                if (isLoading) return;
-
-                // Check if the user scrolled near the bottom of the page
-                if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
-                    loadMoreComments();
-                }
-            });
-
-            function loadMoreComments() {
-                if (isLoading) return;
-
-                isLoading = true;
-                document.getElementById('loading-spinner').style.display = 'block';
-
-                fetch(`{{ route('news.comments.fetch', $newsurljoin->id) }}?page=${page}`, {
-                    method: 'GET',
-                    headers: {
-                        'X-Requested-With': 'XMLHttpRequest',
-                    },
-                })
-                .then(response => response.text())
-                .then(html => {
-                    const commentsContainer = document.getElementById('comments-container');
-                    commentsContainer.insertAdjacentHTML('beforeend', html);
-
-                    // Check if there are more comments
-                    if (html.trim() !== '') {
-                        page += 1; // Increment page for the next request
-                    } else {
-                        // No more comments to load
-                        window.removeEventListener('scroll', handleScroll);
-                    }
-
-                    document.getElementById('loading-spinner').style.display = 'none';
-                    isLoading = false;
-                })
-                .catch(error => {
-                    console.error('Error loading comments:', error);
-                    document.getElementById('loading-spinner').style.display = 'none';
-                    isLoading = false;
-                });
-            }
-
-            function handleScroll() {
-                if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
-                    loadComments();
-                }
-            }
-
-            // Attach scroll event listener
-            window.addEventListener('scroll', handleScroll);
-
-            // Load the first page of comments
-            document.addEventListener('DOMContentLoaded', loadComments);
-        </script>
-        @endpush -->
-    
         <script>
             function showMoreText(commentId) {
                 var commentText = document.getElementById('comment-' + commentId);

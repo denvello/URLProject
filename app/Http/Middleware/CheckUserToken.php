@@ -8,25 +8,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Models\User;
 
-// class CheckUserToken
-// {
-//     public function handle(Request $request, Closure $next)
-//     {
-//         // Cek apakah user sudah login
-//         if (Auth::check()) {
-//             $user = Auth::user();
-
-//             // Cek apakah token user ada
-//             if (empty($user->token)) {
-//                 // Buat token baru
-//                 $user->token = Str::random(60); // Generate token unik
-//                 $user->save(); // Simpan ke database
-//             }
-//         }
-
-//         return $next($request);
-//     }
-// }
 class CheckUserToken
 {
     public function handle(Request $request, Closure $next)
