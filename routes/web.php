@@ -112,3 +112,7 @@ Route::get('/dashboarduser/feedback-detailuser', [News_Url_Controller::class, 'i
 Route::post('/dashboard/update-status', [News_Url_Controller::class, 'updateStatusNews'])->name('admin.updateStatusNews');
 Route::post('/dashboard/update-statusprod', [News_Url_Controller::class, 'updateStatusProd'])->name('admin.updateStatusProd');
 Route::post('/dashboard/update-statusfeed', [News_Url_Controller::class, 'updateStatusFeed'])->name('admin.updateStatusFeed');
+
+Route::get('/privacy-policy', function () {
+    return view('privacy-policy');
+})->name('privacy.policy');

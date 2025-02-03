@@ -75,6 +75,16 @@
             transition: background-color 0.3s, transform 0.2s;
         }
 
+        .form-container button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        .form-container button:hover:enabled {
+            background-color: #0056b3;
+            transform: scale(1.02);
+        }
+
         .form-container button:hover {
             background-color: #0056b3;
             transform: scale(1.02);
@@ -188,6 +198,25 @@
     font-size: 0.9rem;
 }
 
+ /* Checkbox Styling */
+ .checkbox-container {
+            display: flex;
+            align-items: center;
+            justify-content: start;
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+
+        .checkbox-container input {
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        .checkbox-container label {
+            cursor: pointer;
+            color: #007bff;
+        }
+
     </style>
      <!-- Google tag (gtag.js) -->
      <script async src="https://www.googletagmanager.com/gtag/js?id=G-ESM0Z1DLK4"></script>
@@ -222,8 +251,27 @@
                 <div class="image-preview" id="imagePreview">
                     <button type="button" class="remove-btn" onclick="removeImage()">X</button>
                 </div>
-            </div> 
-            <button type="submit">Register</button>
+            </div>
+            
+             <!-- Checkbox Persetujuan -->
+             <div class="checkbox-container">
+                <input type="checkbox" id="agreeCheckbox" onclick="toggleRegisterButton()">
+                <label for="agreeCheckbox">
+                    Saya menyetujui <a href="javascript:void(0)" onclick="openPrivacyModal()">Kebijakan Privasi</a>
+                </label>
+            </div>
+            <br>
+            <div id="privacyModal" class="modal">
+                <div class="modal-content">
+                    <span class="close-modal" onclick="closePrivacyModal()">&times;</span>
+                    <div id="privacyContent">
+                        <p>Memuat kebijakan privasi...</p>
+                    </div>
+                </div>
+            </div>
+            <!-- <button type="submit">Register</button> -->
+            <button type="submit" id="registerButton" disabled>Register</button>
+        
         </form>
         <p>Already have an account? <a href="{{ route('login') }}">Login</a></p>
 
@@ -281,5 +329,63 @@
             imagePreview.innerHTML = ""; // Hapus pratinjau
         }
     </script>
+
+<script>
+        // Fungsi untuk menampilkan modal kebijakan privasi
+        function openPrivacyModal() {
+            document.getElementById("privacyModal").style.display = "flex";
+        }
+
+        // Fungsi untuk menutup modal kebijakan privasi
+        function closePrivacyModal() {
+            document.getElementById("privacyModal").style.display = "none";
+        }
+
+        // Fungsi untuk mengaktifkan / menonaktifkan tombol Register berdasarkan checkbox
+        function toggleRegisterButton() {
+            document.getElementById("registerButton").disabled = !document.getElementById("agreeCheckbox").checked;
+        }
+
+        // Menutup modal jika pengguna mengklik di luar kontennya
+        window.onclick = function(event) {
+            const modal = document.getElementById("privacyModal");
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        };
+    </script>
+    
+    <script>
+    function openPrivacyModal() {
+        const modal = document.getElementById("privacyModal");
+        const contentDiv = document.getElementById("privacyContent");
+
+        // Load content only if it's not loaded yet
+        if (!contentDiv.innerHTML.includes('<h2>')) {
+            fetch("{{ route('privacy.policy') }}")
+                .then(response => response.text())
+                .then(data => {
+                    contentDiv.innerHTML = data; // Replace with fetched content
+                })
+                .catch(error => {
+                    contentDiv.innerHTML = "<p>Gagal memuat kebijakan privasi. Silakan coba lagi.</p>";
+                });
+        }
+
+        modal.style.display = "flex";
+    }
+
+    function closePrivacyModal() {
+        document.getElementById("privacyModal").style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        const modal = document.getElementById("privacyModal");
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    };
+</script>
+
 </body>
 </html>
